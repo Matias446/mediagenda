@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mediAgenda.Dominio", "mediAgenda.Dominio\mediAgenda.Dominio.csproj", "{A65DE424-0A95-40FA-ACCD-61F000DFF477}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mediAgenda.IDataAccess", "mediAgenda.IDataAccess\mediAgenda.IDataAccess.csproj", "{00D4F07E-3E6B-4A9A-B055-1DD6A02F0B7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mediAgenda.DataAccess", "mediAgenda.DataAccess\mediAgenda.DataAccess.csproj", "{408A4D26-A776-41CF-BDD1-94690B3CB23E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mediAgenda.ILogicaNegocio", "mediAgenda.ILogicaNegocio\mediAgenda.ILogicaNegocio.csproj", "{C59A41C6-33B0-4B79-8EA1-278BFAB46EC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mediAgenda.LogicaNegocio", "mediAgenda.LogicaNegocio\mediAgenda.LogicaNegocio.csproj", "{1750DDBA-00DB-486A-8BEB-C24BFA43BAEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mediAgenda.WebAPI", "mediAgenda.WebAPI\mediAgenda.WebAPI.csproj", "{7CAA60A2-B0D7-4C0E-9B29-1E452AB53772}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A65DE424-0A95-40FA-ACCD-61F000DFF477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A65DE424-0A95-40FA-ACCD-61F000DFF477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A65DE424-0A95-40FA-ACCD-61F000DFF477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A65DE424-0A95-40FA-ACCD-61F000DFF477}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00D4F07E-3E6B-4A9A-B055-1DD6A02F0B7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D4F07E-3E6B-4A9A-B055-1DD6A02F0B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D4F07E-3E6B-4A9A-B055-1DD6A02F0B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D4F07E-3E6B-4A9A-B055-1DD6A02F0B7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{408A4D26-A776-41CF-BDD1-94690B3CB23E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{408A4D26-A776-41CF-BDD1-94690B3CB23E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{408A4D26-A776-41CF-BDD1-94690B3CB23E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{408A4D26-A776-41CF-BDD1-94690B3CB23E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C59A41C6-33B0-4B79-8EA1-278BFAB46EC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C59A41C6-33B0-4B79-8EA1-278BFAB46EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C59A41C6-33B0-4B79-8EA1-278BFAB46EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C59A41C6-33B0-4B79-8EA1-278BFAB46EC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1750DDBA-00DB-486A-8BEB-C24BFA43BAEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1750DDBA-00DB-486A-8BEB-C24BFA43BAEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1750DDBA-00DB-486A-8BEB-C24BFA43BAEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1750DDBA-00DB-486A-8BEB-C24BFA43BAEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CAA60A2-B0D7-4C0E-9B29-1E452AB53772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CAA60A2-B0D7-4C0E-9B29-1E452AB53772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CAA60A2-B0D7-4C0E-9B29-1E452AB53772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CAA60A2-B0D7-4C0E-9B29-1E452AB53772}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

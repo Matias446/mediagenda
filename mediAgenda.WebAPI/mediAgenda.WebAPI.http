@@ -1,0 +1,6 @@
+@mediAgenda.WebAPI_HostAddress = http://localhost:5031
+
+GET {{mediAgenda.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
