@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "MpI4IwuI9zU=",
+  "dgSpecHash": "7smDE8Pdimg=",
   "success": true,
   "projectFilePath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.IDataAccess\\mediAgenda.IDataAccess.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\mapis\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.27\\microsoft.netcore.app.ref.8.0.27.nupkg.sha512",
+    "C:\\Users\\mapis\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.27\\microsoft.windowsdesktop.app.ref.8.0.27.nupkg.sha512",
+    "C:\\Users\\mapis\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.27\\microsoft.aspnetcore.app.ref.8.0.27.nupkg.sha512"
+  ],
   "logs": []
 }
