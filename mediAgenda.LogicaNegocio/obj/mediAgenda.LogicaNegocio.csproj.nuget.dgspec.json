@@ -4,6 +4,200 @@
     "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.LogicaNegocio\\mediAgenda.LogicaNegocio.csproj": {}
   },
   "projects": {
+    "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj",
+        "projectName": "mediAgenda.Dominio",
+        "projectPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj",
+        "packagesPath": "C:\\Users\\mapis\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\mapis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.413/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.IDataAccess\\mediAgenda.IDataAccess.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.IDataAccess\\mediAgenda.IDataAccess.csproj",
+        "projectName": "mediAgenda.IDataAccess",
+        "projectPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.IDataAccess\\mediAgenda.IDataAccess.csproj",
+        "packagesPath": "C:\\Users\\mapis\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.IDataAccess\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\mapis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj": {
+                "projectPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.413/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.ILogicaNegocio\\mediAgenda.ILogicaNegocio.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.ILogicaNegocio\\mediAgenda.ILogicaNegocio.csproj",
+        "projectName": "mediAgenda.ILogicaNegocio",
+        "projectPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.ILogicaNegocio\\mediAgenda.ILogicaNegocio.csproj",
+        "packagesPath": "C:\\Users\\mapis\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.ILogicaNegocio\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\mapis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj": {
+                "projectPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.413/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.LogicaNegocio\\mediAgenda.LogicaNegocio.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -29,7 +223,17 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj": {
+                "projectPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj"
+              },
+              "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.IDataAccess\\mediAgenda.IDataAccess.csproj": {
+                "projectPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.IDataAccess\\mediAgenda.IDataAccess.csproj"
+              },
+              "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.ILogicaNegocio\\mediAgenda.ILogicaNegocio.csproj": {
+                "projectPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.ILogicaNegocio\\mediAgenda.ILogicaNegocio.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

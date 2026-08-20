@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "mediAgenda.ILogicaNegocio/1.0.0": {
+        "dependencies": {
+          "mediAgenda.Dominio": "1.0.0"
+        },
+        "runtime": {
+          "mediAgenda.ILogicaNegocio.dll": {}
+        }
+      },
+      "mediAgenda.Dominio/1.0.0": {
+        "runtime": {
+          "mediAgenda.Dominio.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "mediAgenda.ILogicaNegocio/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "mediAgenda.Dominio/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

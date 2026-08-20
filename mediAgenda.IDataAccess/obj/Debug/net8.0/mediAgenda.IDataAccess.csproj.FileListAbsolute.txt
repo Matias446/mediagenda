@@ -1,0 +1,16 @@
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\bin\Debug\net8.0\mediAgenda.IDataAccess.deps.json
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\bin\Debug\net8.0\mediAgenda.IDataAccess.dll
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\bin\Debug\net8.0\mediAgenda.IDataAccess.pdb
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\bin\Debug\net8.0\mediAgenda.Dominio.dll
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\bin\Debug\net8.0\mediAgenda.Dominio.pdb
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\mediAgenda.IDataAccess.csproj.AssemblyReference.cache
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\mediAgenda.IDataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\mediAgenda.IDataAccess.AssemblyInfoInputs.cache
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\mediAgenda.IDataAccess.AssemblyInfo.cs
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\mediAgenda.IDataAccess.csproj.CoreCompileInputs.cache
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\mediAgenda.IDataAccess.sourcelink.json
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\mediAgen.AD1C8F7B.Up2Date
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\mediAgenda.IDataAccess.dll
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\refint\mediAgenda.IDataAccess.dll
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\mediAgenda.IDataAccess.pdb
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.IDataAccess\obj\Debug\net8.0\ref\mediAgenda.IDataAccess.dll

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "0IOWLVXqr7yy9jSJnfrFmWg0XcZ6HJNy2gcnPzui2zk=",
+  "Source": "mediAgenda.WebAPI",
+  "BasePath": "_content/mediAgenda.WebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

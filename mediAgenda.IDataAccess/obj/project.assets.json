@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "mediAgenda.Dominio/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/mediAgenda.Dominio.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/mediAgenda.Dominio.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "mediAgenda.Dominio/1.0.0": {
+      "type": "project",
+      "path": "../mediAgenda.Dominio/mediAgenda.Dominio.csproj",
+      "msbuildProject": "../mediAgenda.Dominio/mediAgenda.Dominio.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "mediAgenda.Dominio >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\mapis\\.nuget\\packages\\": {},
@@ -36,7 +55,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj": {
+              "projectPath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.Dominio\\mediAgenda.Dominio.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

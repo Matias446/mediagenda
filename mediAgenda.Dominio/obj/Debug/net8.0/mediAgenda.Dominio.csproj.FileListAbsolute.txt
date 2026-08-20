@@ -1,0 +1,12 @@
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\bin\Debug\net8.0\mediAgenda.Dominio.deps.json
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\bin\Debug\net8.0\mediAgenda.Dominio.dll
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\bin\Debug\net8.0\mediAgenda.Dominio.pdb
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\obj\Debug\net8.0\mediAgenda.Dominio.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\obj\Debug\net8.0\mediAgenda.Dominio.AssemblyInfoInputs.cache
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\obj\Debug\net8.0\mediAgenda.Dominio.AssemblyInfo.cs
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\obj\Debug\net8.0\mediAgenda.Dominio.csproj.CoreCompileInputs.cache
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\obj\Debug\net8.0\mediAgenda.Dominio.sourcelink.json
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\obj\Debug\net8.0\mediAgenda.Dominio.dll
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\obj\Debug\net8.0\refint\mediAgenda.Dominio.dll
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\obj\Debug\net8.0\mediAgenda.Dominio.pdb
+C:\Users\mapis\Documents\mediAgenda\mediAgenda.Dominio\obj\Debug\net8.0\ref\mediAgenda.Dominio.dll
