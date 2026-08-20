@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("mediAgenda.Dominio")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+76b35c03afff588e94795a7bc1640bf69bcc7ee7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bd951c13926e9de8b7cb44af3b18f0ad8c1242ab")]
 [assembly: System.Reflection.AssemblyProductAttribute("mediAgenda.Dominio")]
 [assembly: System.Reflection.AssemblyTitleAttribute("mediAgenda.Dominio")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
