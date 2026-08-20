@@ -32,6 +32,13 @@ public class TurnoController : ControllerBase
         return Ok(dto);
     }
 
+    [HttpGet("disponibles")]
+    public async Task<IActionResult> ObtenerSlotsDisponibles([FromQuery] int medicoId, [FromQuery] DateTime fecha)
+    {
+        var slots = await _servicio.ObtenerSlotsDisponiblesAsync(medicoId, fecha);
+        return Ok(slots);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> ObtenerPorId(int id)
     {

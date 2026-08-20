@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("mediAgenda.IDataAccess")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bd951c13926e9de8b7cb44af3b18f0ad8c1242ab")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c8452b57423d93ac37c8ca0a10fc2905af03b7f")]
 [assembly: System.Reflection.AssemblyProductAttribute("mediAgenda.IDataAccess")]
 [assembly: System.Reflection.AssemblyTitleAttribute("mediAgenda.IDataAccess")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

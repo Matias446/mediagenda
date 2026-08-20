@@ -10,6 +10,9 @@ public class Medico
     public Especialidad Especialidad { get; set; }
     public int SedeId { get; set; }
     public Sede Sede { get; set; }
+
+    public int DuracionTurnoMinutos { get; set; } = 20;
     public ICollection<Turno> Turnos { get; set; }
     public ICollection<HorarioDisponible> Horarios { get; set; }
+
 }
