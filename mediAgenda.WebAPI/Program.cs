@@ -21,12 +21,14 @@ builder.Services.AddScoped<IRepositorio<Medico>, Repositorio<Medico>>();
 builder.Services.AddScoped<IRepositorio<Especialidad>, Repositorio<Especialidad>>();
 builder.Services.AddScoped<IRepositorio<Sede>, Repositorio<Sede>>();
 builder.Services.AddScoped<IRepositorio<Turno>, Repositorio<Turno>>();
+builder.Services.AddScoped<IRepositorio<Usuario>, Repositorio<Usuario>>();
 
 builder.Services.AddScoped<IPacienteServicio, PacienteServicio>();
 builder.Services.AddScoped<IMedicoServicio, MedicoServicio>();
 builder.Services.AddScoped<IEspecialidadServicio, EspecialidadServicio>();
 builder.Services.AddScoped<ISedeServicio, SedeServicio>();
 builder.Services.AddScoped<ITurnoServicio, TurnoServicio>();
+builder.Services.AddScoped<IAuthServicio, AuthServicio>();
 
 builder.Services.AddCors(options =>
 {
@@ -37,6 +39,22 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+            ValidAudience = builder.Configuration["JwtSettings:Audience"],
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!))
+        };
+    });
 
 var app = builder.Build();
 
@@ -49,6 +67,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

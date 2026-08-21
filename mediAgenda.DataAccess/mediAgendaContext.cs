@@ -13,6 +13,7 @@ public class MediAgendaContext : DbContext
     public DbSet<Sede> Sedes { get; set; }
     public DbSet<Turno> Turnos { get; set; }
     public DbSet<HorarioDisponible> HorariosDisponibles { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

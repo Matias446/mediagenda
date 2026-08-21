@@ -207,6 +207,40 @@ namespace mediAgenda.DataAccess.Migrations
                     b.ToTable("Turnos");
                 });
 
+            modelBuilder.Entity("mediAgenda.Dominio.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("MedicoId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("PacienteId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Rol")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicoId");
+
+                    b.HasIndex("PacienteId");
+
+                    b.ToTable("Usuarios");
+                });
+
             modelBuilder.Entity("mediAgenda.Dominio.HorarioDisponible", b =>
                 {
                     b.HasOne("mediAgenda.Dominio.Medico", "Medico")
@@ -250,6 +284,21 @@ namespace mediAgenda.DataAccess.Migrations
                         .HasForeignKey("PacienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Medico");
+
+                    b.Navigation("Paciente");
+                });
+
+            modelBuilder.Entity("mediAgenda.Dominio.Usuario", b =>
+                {
+                    b.HasOne("mediAgenda.Dominio.Medico", "Medico")
+                        .WithMany()
+                        .HasForeignKey("MedicoId");
+
+                    b.HasOne("mediAgenda.Dominio.Paciente", "Paciente")
+                        .WithMany()
+                        .HasForeignKey("PacienteId");
 
                     b.Navigation("Medico");
 
