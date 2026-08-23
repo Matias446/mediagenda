@@ -1,12 +1,14 @@
 using mediAgenda.Dominio;
 using mediAgenda.ILogicaNegocio;
 using mediAgenda.WebAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace mediAgenda.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class MedicoController : ControllerBase
 {
     private readonly IMedicoServicio _servicio;
@@ -17,6 +19,7 @@ public class MedicoController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> ObtenerTodos()
     {
         var medicos = await _servicio.ObtenerTodosAsync();
@@ -33,6 +36,7 @@ public class MedicoController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> ObtenerPorId(int id)
     {
         var medico = await _servicio.ObtenerPorIdAsync(id);
@@ -49,6 +53,7 @@ public class MedicoController : ControllerBase
     }
 
     [HttpGet("especialidad/{especialidadId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> ObtenerPorEspecialidad(int especialidadId)
     {
         var medicos = await _servicio.ObtenerPorEspecialidadAsync(especialidadId);

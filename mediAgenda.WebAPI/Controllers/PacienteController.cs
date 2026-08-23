@@ -1,12 +1,14 @@
 using mediAgenda.Dominio;
 using mediAgenda.ILogicaNegocio;
 using mediAgenda.WebAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace mediAgenda.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class PacienteController : ControllerBase
 {
     private readonly IPacienteServicio _servicio;
@@ -49,6 +51,7 @@ public class PacienteController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> Crear([FromBody] CrearPacienteDTO dto)
     {
         var paciente = new Paciente
@@ -56,10 +59,10 @@ public class PacienteController : ControllerBase
             Nombre = dto.Nombre,
             Apellido = dto.Apellido,
             Email = dto.Email,
-            Password = dto.Password,
+            Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             Cedula = dto.Cedula,
             Telefono = dto.Telefono,
-            FechaNacimiento = dto.FechaNacimiento
+            FechaNacimiento = DateTime.SpecifyKind(dto.FechaNacimiento, DateTimeKind.Utc)
         };
         var creado = await _servicio.CrearAsync(paciente);
         return CreatedAtAction(nameof(ObtenerPorId), new { id = creado.Id }, new PacienteDTO

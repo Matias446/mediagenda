@@ -1,12 +1,14 @@
 using mediAgenda.Dominio;
 using mediAgenda.ILogicaNegocio;
 using mediAgenda.WebAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace mediAgenda.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TurnoController : ControllerBase
 {
     private readonly ITurnoServicio _servicio;
@@ -17,6 +19,7 @@ public class TurnoController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> ObtenerTodos()
     {
         var turnos = await _servicio.ObtenerTodosAsync();
@@ -30,13 +33,6 @@ public class TurnoController : ControllerBase
             Motivo = t.Motivo
         });
         return Ok(dto);
-    }
-
-    [HttpGet("disponibles")]
-    public async Task<IActionResult> ObtenerSlotsDisponibles([FromQuery] int medicoId, [FromQuery] DateTime fecha)
-    {
-        var slots = await _servicio.ObtenerSlotsDisponiblesAsync(medicoId, fecha);
-        return Ok(slots);
     }
 
     [HttpGet("{id}")]
@@ -57,34 +53,19 @@ public class TurnoController : ControllerBase
 
     [HttpGet("paciente/{pacienteId}")]
     public async Task<IActionResult> ObtenerPorPaciente(int pacienteId)
-    {
-        var turnos = await _servicio.ObtenerPorPacienteAsync(pacienteId);
-        var dto = turnos.Select(t => new TurnoDTO
-        {
-            Id = t.Id,
-            PacienteId = t.PacienteId,
-            MedicoId = t.MedicoId,
-            FechaHora = t.FechaHora,
-            Estado = t.Estado.ToString(),
-            Motivo = t.Motivo
-        });
-        return Ok(dto);
-    }
+        => Ok(await _servicio.ObtenerPorPacienteAsync(pacienteId));
 
     [HttpGet("medico/{medicoId}")]
     public async Task<IActionResult> ObtenerPorMedico(int medicoId)
+        => Ok(await _servicio.ObtenerPorMedicoAsync(medicoId));
+
+    [HttpGet("disponibles")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ObtenerSlotsDisponibles([FromQuery] int medicoId, [FromQuery] DateTime fecha)
     {
-        var turnos = await _servicio.ObtenerPorMedicoAsync(medicoId);
-        var dto = turnos.Select(t => new TurnoDTO
-        {
-            Id = t.Id,
-            PacienteId = t.PacienteId,
-            MedicoId = t.MedicoId,
-            FechaHora = t.FechaHora,
-            Estado = t.Estado.ToString(),
-            Motivo = t.Motivo
-        });
-        return Ok(dto);
+        var fechaUtc = DateTime.SpecifyKind(fecha, DateTimeKind.Utc);
+        var slots = await _servicio.ObtenerSlotsDisponiblesAsync(medicoId, fechaUtc);
+        return Ok(slots);
     }
 
     [HttpPost]

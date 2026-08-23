@@ -1,12 +1,14 @@
 using mediAgenda.Dominio;
 using mediAgenda.ILogicaNegocio;
 using mediAgenda.WebAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace mediAgenda.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class SedeController : ControllerBase
 {
     private readonly ISedeServicio _servicio;
@@ -17,6 +19,7 @@ public class SedeController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> ObtenerTodos()
     {
         var sedes = await _servicio.ObtenerTodosAsync();
@@ -31,6 +34,7 @@ public class SedeController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<IActionResult> ObtenerPorId(int id)
     {
         var sede = await _servicio.ObtenerPorIdAsync(id);
