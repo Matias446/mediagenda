@@ -30,6 +30,8 @@ builder.Services.AddScoped<ISedeServicio, SedeServicio>();
 builder.Services.AddScoped<ITurnoServicio, TurnoServicio>();
 builder.Services.AddScoped<IAuthServicio, AuthServicio>();
 
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -60,6 +62,8 @@ builder.Services.AddAuthentication("Bearer")
     });
 
 var app = builder.Build();
+
+app.UseMiddleware<mediAgenda.WebAPI.Middleware.ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
