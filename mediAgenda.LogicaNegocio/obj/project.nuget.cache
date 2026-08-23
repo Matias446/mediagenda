@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "xUISM6yDYqg=",
+  "dgSpecHash": "jqPHbVK0fHo=",
   "success": true,
   "projectFilePath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.LogicaNegocio\\mediAgenda.LogicaNegocio.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\mapis\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\mapis\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\mapis\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
     "C:\\Users\\mapis\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.0.2\\microsoft.identitymodel.abstractions.8.0.2.nupkg.sha512",

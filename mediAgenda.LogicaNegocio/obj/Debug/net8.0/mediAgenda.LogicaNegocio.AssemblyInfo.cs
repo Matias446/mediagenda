@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("mediAgenda.LogicaNegocio")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c0e3f1090325bd827d93881b931ef9fbb6aa7557")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f6a92e133b93df62094aa4f1971b5a0cfce3f938")]
 [assembly: System.Reflection.AssemblyProductAttribute("mediAgenda.LogicaNegocio")]
 [assembly: System.Reflection.AssemblyTitleAttribute("mediAgenda.LogicaNegocio")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

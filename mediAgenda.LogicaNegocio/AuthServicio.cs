@@ -23,17 +23,19 @@ public class AuthServicio : IAuthServicio
     public async Task<string?> LoginAsync(string email, string password)
     {
         var usuarios = await _usuarioRepositorio.ObtenerTodosAsync();
-        var usuario = usuarios.FirstOrDefault(u => u.Email == email && u.Password == password);
+        var usuario = usuarios.FirstOrDefault(u => u.Email == email);
         if (usuario == null) return null;
+        if (!BCrypt.Net.BCrypt.Verify(password, usuario.Password)) return null;
         return GenerarToken(usuario);
     }
 
     public async Task<Usuario> RegistrarAsync(string email, string password, RolUsuario rol, int? pacienteId, int? medicoId)
     {
+        var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
         var usuario = new Usuario
         {
             Email = email,
-            Password = password,
+            Password = passwordHash,
             Rol = rol,
             PacienteId = pacienteId,
             MedicoId = medicoId

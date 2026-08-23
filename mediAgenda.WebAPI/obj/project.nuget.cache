@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Tyaq2XMHiQw=",
+  "dgSpecHash": "zBzkr8vcBhc=",
   "success": true,
   "projectFilePath": "C:\\Users\\mapis\\Documents\\mediAgenda\\mediAgenda.WebAPI\\mediAgenda.WebAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\mapis\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\mapis\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\mapis\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.11\\microsoft.aspnetcore.authentication.jwtbearer.8.0.11.nupkg.sha512",
     "C:\\Users\\mapis\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.19\\microsoft.aspnetcore.openapi.8.0.19.nupkg.sha512",
