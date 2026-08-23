@@ -45,39 +45,42 @@ function Pacientes() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-6">
-      <h1 className="text-3xl font-bold text-blue-600 mb-6">Pacientes</h1>
+    <div className="max-w-3xl mx-auto mt-6 px-4 pb-10">
+      <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Pacientes</h1>
 
       <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6 shadow-sm space-y-3">
-        <div className="flex gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <input type="text" placeholder="Nombre" value={form.nombre}
             onChange={e => setForm({ ...form, nombre: e.target.value })}
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           <input type="text" placeholder="Apellido" value={form.apellido}
             onChange={e => setForm({ ...form, apellido: e.target.value })}
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <input type="email" placeholder="Email" value={form.email}
             onChange={e => setForm({ ...form, email: e.target.value })}
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           <input type="password" placeholder="Contraseña" value={form.password}
             onChange={e => setForm({ ...form, password: e.target.value })}
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <input type="text" placeholder="Cédula" value={form.cedula}
             onChange={e => setForm({ ...form, cedula: e.target.value })}
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           <input type="text" placeholder="Teléfono" value={form.telefono}
             onChange={e => setForm({ ...form, telefono: e.target.value })}
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
-        <input type="date" value={form.fechaNacimiento}
-          onChange={e => setForm({ ...form, fechaNacimiento: e.target.value })}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <div>
+          <label className="text-sm text-gray-500 mb-1 block">Fecha de nacimiento</label>
+          <input type="date" value={form.fechaNacimiento}
+            onChange={e => setForm({ ...form, fechaNacimiento: e.target.value })}
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
         <button onClick={crear}
-          className="w-full bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+          className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium">
           Agregar Paciente
         </button>
       </div>
@@ -92,7 +95,8 @@ function Pacientes() {
                 <p className="font-medium text-gray-800">{p.nombre} {p.apellido}</p>
                 <p className="text-sm text-gray-500">{p.email} · {p.cedula}</p>
               </div>
-              <button onClick={() => eliminar(p.id)} className="text-red-500 hover:text-red-700 text-sm">
+              <button onClick={() => eliminar(p.id)}
+                className="text-red-500 hover:text-red-700 text-sm font-medium ml-4">
                 Eliminar
               </button>
             </li>

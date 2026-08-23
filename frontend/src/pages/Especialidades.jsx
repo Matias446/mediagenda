@@ -18,9 +18,7 @@ function Especialidades() {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      await cargarEspecialidades()
-    }
+    const fetchData = async () => { await cargarEspecialidades() }
     fetchData()
   }, [])
 
@@ -45,21 +43,16 @@ function Especialidades() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6">
-      <h1 className="text-3xl font-bold text-blue-600 mb-6">Especialidades</h1>
+    <div className="max-w-2xl mx-auto mt-6 px-4 pb-10">
+      <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Especialidades</h1>
 
-      <div className="flex gap-2 mb-6">
-        <input
-          type="text"
-          value={nombre}
+      <div className="flex flex-col sm:flex-row gap-2 mb-6">
+        <input type="text" value={nombre}
           onChange={e => setNombre(e.target.value)}
           placeholder="Nueva especialidad"
-          className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          onClick={crear}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-        >
+          className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <button onClick={crear}
+          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium">
           Agregar
         </button>
       </div>
@@ -71,10 +64,8 @@ function Especialidades() {
           {especialidades.map(e => (
             <li key={e.id} className="flex justify-between items-center bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
               <span className="text-gray-800">{e.nombre}</span>
-              <button
-                onClick={() => eliminar(e.id)}
-                className="text-red-500 hover:text-red-700 text-sm"
-              >
+              <button onClick={() => eliminar(e.id)}
+                className="text-red-500 hover:text-red-700 text-sm font-medium">
                 Eliminar
               </button>
             </li>

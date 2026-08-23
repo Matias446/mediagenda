@@ -1,10 +1,12 @@
+import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext.jsx'
 
 function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
   const { isAuthenticated, logout } = useAuth()
+  const [menuAbierto, setMenuAbierto] = useState(false)
 
   const links = [
     { to: '/', label: 'Inicio' },
@@ -18,6 +20,7 @@ function Navbar() {
   const handleLogout = () => {
     logout()
     navigate('/login')
+    setMenuAbierto(false)
   }
 
   return (
@@ -26,15 +29,14 @@ function Navbar() {
         <Link to="/" className="text-xl font-bold tracking-tight">
           mediAgenda
         </Link>
-        <div className="flex items-center gap-6">
+
+        {/* Desktop */}
+        <div className="hidden md:flex items-center gap-6">
           {isAuthenticated && links.map(link => (
-            <Link
-              key={link.to}
-              to={link.to}
+            <Link key={link.to} to={link.to}
               className={`text-sm font-medium transition-opacity hover:opacity-80 ${
                 location.pathname === link.to ? 'underline underline-offset-4' : 'opacity-90'
-              }`}
-            >
+              }`}>
               {link.label}
             </Link>
           ))}
@@ -50,7 +52,40 @@ function Navbar() {
             </Link>
           )}
         </div>
+
+        {/* Mobile burger */}
+        <button className="md:hidden flex flex-col gap-1.5" onClick={() => setMenuAbierto(!menuAbierto)}>
+          <span className={`block w-6 h-0.5 bg-white transition-transform ${menuAbierto ? 'rotate-45 translate-y-2' : ''}`} />
+          <span className={`block w-6 h-0.5 bg-white transition-opacity ${menuAbierto ? 'opacity-0' : ''}`} />
+          <span className={`block w-6 h-0.5 bg-white transition-transform ${menuAbierto ? '-rotate-45 -translate-y-2' : ''}`} />
+        </button>
       </div>
+
+      {/* Mobile menu */}
+      {menuAbierto && (
+        <div className="md:hidden px-6 pb-4 flex flex-col gap-3">
+          {isAuthenticated && links.map(link => (
+            <Link key={link.to} to={link.to}
+              onClick={() => setMenuAbierto(false)}
+              className={`text-sm font-medium py-2 border-b border-blue-500 ${
+                location.pathname === link.to ? 'font-bold' : 'opacity-90'
+              }`}>
+              {link.label}
+            </Link>
+          ))}
+          {isAuthenticated ? (
+            <button onClick={handleLogout}
+              className="text-sm font-medium bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 mt-2">
+              Cerrar sesión
+            </button>
+          ) : (
+            <Link to="/login" onClick={() => setMenuAbierto(false)}
+              className="text-sm font-medium bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 mt-2">
+              Iniciar sesión
+            </Link>
+          )}
+        </div>
+      )}
     </nav>
   )
 }

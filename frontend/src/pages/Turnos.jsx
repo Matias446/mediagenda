@@ -97,31 +97,34 @@ function Turnos() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-6">
-      <h1 className="text-3xl font-bold text-blue-600 mb-6">Turnos</h1>
+    <div className="max-w-3xl mx-auto mt-6 px-4 pb-10">
+      <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Turnos</h1>
 
       <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6 shadow-sm space-y-3">
         <select value={form.pacienteId}
           onChange={e => setForm({ ...form, pacienteId: e.target.value })}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">Seleccioná un paciente</option>
           {pacientes.map(p => <option key={p.id} value={p.id}>{p.nombre} {p.apellido}</option>)}
         </select>
 
         <select value={form.medicoId} onChange={handleMedicoChange}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">Seleccioná un médico</option>
           {medicos.map(m => <option key={m.id} value={m.id}>{m.nombre} {m.apellido}</option>)}
         </select>
 
-        <input type="date" value={form.fecha} onChange={handleFechaChange}
-          min={new Date().toISOString().split('T')[0]}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <div>
+          <label className="text-sm text-gray-500 mb-1 block">Fecha del turno</label>
+          <input type="date" value={form.fecha} onChange={handleFechaChange}
+            min={new Date().toISOString().split('T')[0]}
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
 
         {slotsDisponibles.length > 0 && (
           <div>
             <p className="text-sm text-gray-500 mb-2">Horarios disponibles:</p>
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {slotsDisponibles.map(slot => (
                 <button key={slot}
                   onClick={() => setForm(prev => ({ ...prev, slotSeleccionado: slot }))}
@@ -143,7 +146,7 @@ function Turnos() {
 
         <button onClick={crear}
           disabled={!form.pacienteId || !form.medicoId || !form.slotSeleccionado}
-          className="w-full bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+          className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed">
           Reservar Turno
         </button>
       </div>
@@ -153,21 +156,24 @@ function Turnos() {
       ) : (
         <ul className="space-y-2">
           {turnos.map(t => (
-            <li key={t.id} className="flex justify-between items-center bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
-              <div>
-                <p className="font-medium text-gray-800">
-                  Paciente #{t.pacienteId} · Médico #{t.medicoId}
-                </p>
-                <p className="text-sm text-gray-500">
-                  {new Date(t.fechaHora).toLocaleString('es-UY')}
-                </p>
-                <p className={`text-sm font-medium ${estadoColor(t.estado)}`}>{t.estado}</p>
+            <li key={t.id} className="bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="font-medium text-gray-800">
+                    Paciente #{t.pacienteId} · Médico #{t.medicoId}
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {new Date(t.fechaHora).toLocaleString('es-UY')}
+                  </p>
+                  <p className={`text-sm font-medium mt-1 ${estadoColor(t.estado)}`}>{t.estado}</p>
+                </div>
+                {t.estado === 'Pendiente' && (
+                  <button onClick={() => cancelar(t.id)}
+                    className="text-red-500 hover:text-red-700 text-sm font-medium ml-4">
+                    Cancelar
+                  </button>
+                )}
               </div>
-              {t.estado === 'Pendiente' && (
-                <button onClick={() => cancelar(t.id)} className="text-red-500 hover:text-red-700 text-sm">
-                  Cancelar
-                </button>
-              )}
             </li>
           ))}
         </ul>
