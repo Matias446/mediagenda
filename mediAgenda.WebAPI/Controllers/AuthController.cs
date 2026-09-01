@@ -27,10 +27,8 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDTO dto)
     {
-        if (!Enum.TryParse<RolUsuario>(dto.Rol, out var rol))
-            return BadRequest("Rol inválido");
-
-        var usuario = await _authServicio.RegistrarAsync(dto.Email, dto.Password, rol, dto.PacienteId, dto.MedicoId);
+        var usuario = await _authServicio.RegistrarPacienteAsync(
+            dto.Email, dto.Password, dto.Cedula, dto.Nombre, dto.Apellido, dto.Telefono, dto.FechaNacimiento);
         return Ok(new { usuario.Id, usuario.Email, usuario.Rol });
     }
 }

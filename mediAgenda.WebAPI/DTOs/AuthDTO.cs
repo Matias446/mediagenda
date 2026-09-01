@@ -23,11 +23,28 @@ public class RegisterDTO
     [MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
     public string Password { get; set; }
 
-    [Required(ErrorMessage = "El rol es requerido")]
-    public string Rol { get; set; }
+    [Required(ErrorMessage = "Debe confirmar la contraseña")]
+    [Compare(nameof(Password), ErrorMessage = "Las contraseñas no coinciden")]
+    public string ConfirmPassword { get; set; }
 
-    public int? PacienteId { get; set; }
-    public int? MedicoId { get; set; }
+    [Required(ErrorMessage = "La cédula es requerida")]
+    [MaxLength(20, ErrorMessage = "La cédula no puede superar los 20 caracteres")]
+    public string Cedula { get; set; }
+
+    [Required(ErrorMessage = "El nombre es requerido")]
+    [MaxLength(100, ErrorMessage = "El nombre no puede superar los 100 caracteres")]
+    public string Nombre { get; set; }
+
+    [Required(ErrorMessage = "El apellido es requerido")]
+    [MaxLength(100, ErrorMessage = "El apellido no puede superar los 100 caracteres")]
+    public string Apellido { get; set; }
+
+    [Required(ErrorMessage = "El teléfono es requerido")]
+    [Phone(ErrorMessage = "Teléfono inválido")]
+    public string Telefono { get; set; }
+
+    [Required(ErrorMessage = "La fecha de nacimiento es requerida")]
+    public DateTime FechaNacimiento { get; set; }
 }
 
 public class TokenDTO
@@ -35,5 +52,4 @@ public class TokenDTO
     public string Token { get; set; }
     public string Rol { get; set; }
     public int? PacienteId { get; set; }
-    public int? MedicoId { get; set; }
 }

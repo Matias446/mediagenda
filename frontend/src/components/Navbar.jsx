@@ -5,17 +5,32 @@ import { useAuth } from '../context/AuthContext.jsx'
 function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, rol, logout } = useAuth()
   const [menuAbierto, setMenuAbierto] = useState(false)
 
-  const links = [
-    { to: '/', label: 'Inicio' },
-    { to: '/especialidades', label: 'Especialidades' },
-    { to: '/sedes', label: 'Sedes' },
-    { to: '/medicos', label: 'Médicos' },
-    { to: '/pacientes', label: 'Pacientes' },
-    { to: '/turnos', label: 'Turnos' },
-  ]
+  const linksPorRol = {
+    Admin: [
+      { to: '/', label: 'Inicio' },
+      { to: '/especialidades', label: 'Especialidades' },
+      { to: '/sedes', label: 'Sedes' },
+      { to: '/medicos', label: 'Médicos' },
+      { to: '/pacientes', label: 'Pacientes' },
+      { to: '/turnos', label: 'Turnos' },
+    ],
+    Administrativo: [
+      { to: '/', label: 'Inicio' },
+      { to: '/medicos', label: 'Médicos' },
+      { to: '/turnos', label: 'Turnos' },
+      { to: '/pacientes', label: 'Pacientes' },
+    ],
+    Paciente: [
+      { to: '/', label: 'Inicio' },
+      { to: '/turnos', label: 'Mis Turnos' },
+      { to: '/medicos', label: 'Médicos' },
+    ],
+  }
+
+  const links = linksPorRol[rol] || []
 
   const handleLogout = () => {
     logout()

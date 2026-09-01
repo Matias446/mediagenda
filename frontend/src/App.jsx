@@ -9,6 +9,7 @@ import Sedes from './pages/Sedes'
 import Pacientes from './pages/Pacientes'
 import Turnos from './pages/Turnos'
 import Login from './pages/Login'
+import Register from './pages/Register'
 
 function App() {
   return (
@@ -17,12 +18,13 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/" element={<RutaProtegida><Home /></RutaProtegida>} />
-          <Route path="/especialidades" element={<RutaProtegida><Especialidades /></RutaProtegida>} />
-          <Route path="/medicos" element={<RutaProtegida><Medicos /></RutaProtegida>} />
-          <Route path="/sedes" element={<RutaProtegida><Sedes /></RutaProtegida>} />
-          <Route path="/pacientes" element={<RutaProtegida><Pacientes /></RutaProtegida>} />
-          <Route path="/turnos" element={<RutaProtegida><Turnos /></RutaProtegida>} />
+          <Route path="/especialidades" element={<RutaProtegida roles={['Admin']}><Especialidades /></RutaProtegida>} />
+          <Route path="/medicos" element={<RutaProtegida roles={['Admin', 'Administrativo', 'Paciente']}><Medicos /></RutaProtegida>} />
+          <Route path="/sedes" element={<RutaProtegida roles={['Admin']}><Sedes /></RutaProtegida>} />
+          <Route path="/pacientes" element={<RutaProtegida roles={['Admin', 'Administrativo']}><Pacientes /></RutaProtegida>} />
+          <Route path="/turnos" element={<RutaProtegida roles={['Admin', 'Administrativo', 'Paciente']}><Turnos /></RutaProtegida>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

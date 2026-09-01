@@ -26,6 +26,11 @@ public class MediAgendaContext : DbContext
             .IsUnique();
 
         modelBuilder.Entity<Medico>()
+            .HasIndex(m => m.Cedula)
+            .IsUnique()
+            .HasFilter("\"Cedula\" IS NOT NULL");
+
+        modelBuilder.Entity<Medico>()
             .HasOne(m => m.Especialidad)
             .WithMany(e => e.Medicos)
             .HasForeignKey(m => m.EspecialidadId);

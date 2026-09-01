@@ -77,6 +77,7 @@ public class MedicoController : ControllerBase
             Nombre = dto.Nombre,
             Apellido = dto.Apellido,
             Email = dto.Email,
+            Cedula = dto.Cedula,
             EspecialidadId = dto.EspecialidadId,
             SedeId = dto.SedeId
         };
@@ -89,6 +90,32 @@ public class MedicoController : ControllerBase
             Email = creado.Email,
             EspecialidadId = creado.EspecialidadId,
             SedeId = creado.SedeId
+        });
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Actualizar(int id, [FromBody] ActualizarMedicoDTO dto)
+    {
+        var medico = await _servicio.ObtenerPorIdAsync(id);
+        if (medico == null) return NotFound();
+
+        medico.Nombre = dto.Nombre;
+        medico.Apellido = dto.Apellido;
+        medico.Email = dto.Email;
+        if (!string.IsNullOrWhiteSpace(dto.Cedula))
+            medico.Cedula = dto.Cedula;
+        medico.EspecialidadId = dto.EspecialidadId;
+        medico.SedeId = dto.SedeId;
+        await _servicio.ActualizarAsync(medico);
+
+        return Ok(new MedicoDTO
+        {
+            Id = medico.Id,
+            Nombre = medico.Nombre,
+            Apellido = medico.Apellido,
+            Email = medico.Email,
+            EspecialidadId = medico.EspecialidadId,
+            SedeId = medico.SedeId
         });
     }
 

@@ -12,11 +12,19 @@ namespace mediAgenda.LogicaNegocio;
 public class AuthServicio : IAuthServicio
 {
     private readonly IRepositorio<Usuario> _usuarioRepositorio;
+    private readonly IRepositorio<Paciente> _pacienteRepositorio;
+    private readonly IRepositorio<Medico> _medicoRepositorio;
     private readonly IConfiguration _configuration;
 
-    public AuthServicio(IRepositorio<Usuario> usuarioRepositorio, IConfiguration configuration)
+    public AuthServicio(
+        IRepositorio<Usuario> usuarioRepositorio,
+        IRepositorio<Paciente> pacienteRepositorio,
+        IRepositorio<Medico> medicoRepositorio,
+        IConfiguration configuration)
     {
         _usuarioRepositorio = usuarioRepositorio;
+        _pacienteRepositorio = pacienteRepositorio;
+        _medicoRepositorio = medicoRepositorio;
         _configuration = configuration;
     }
 
@@ -29,16 +37,36 @@ public class AuthServicio : IAuthServicio
         return GenerarToken(usuario);
     }
 
-    public async Task<Usuario> RegistrarAsync(string email, string password, RolUsuario rol, int? pacienteId, int? medicoId)
+    public async Task<Usuario> RegistrarPacienteAsync(string email, string password, string cedula, string nombre, string apellido, string telefono, DateTime fechaNacimiento)
     {
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+        var medicos = await _medicoRepositorio.ObtenerTodosAsync();
+        if (medicos.Any(m => m.Cedula == cedula))
+            throw new InvalidOperationException("Esta cédula corresponde a un médico. Contactá al administrador.");
+
+        var pacientes = await _pacienteRepositorio.ObtenerTodosAsync();
+        if (pacientes.Any(p => p.Cedula == cedula))
+            throw new InvalidOperationException("Ya existe un paciente registrado con esta cédula.");
+        if (pacientes.Any(p => p.Email == email))
+            throw new InvalidOperationException("Ya existe un paciente registrado con este email.");
+
+        var paciente = new Paciente
+        {
+            Nombre = nombre,
+            Apellido = apellido,
+            Email = email,
+            Password = BCrypt.Net.BCrypt.HashPassword(password),
+            Cedula = cedula,
+            Telefono = telefono,
+            FechaNacimiento = DateTime.SpecifyKind(fechaNacimiento, DateTimeKind.Utc)
+        };
+        await _pacienteRepositorio.AgregarAsync(paciente);
+
         var usuario = new Usuario
         {
             Email = email,
-            Password = passwordHash,
-            Rol = rol,
-            PacienteId = pacienteId,
-            MedicoId = medicoId
+            Password = BCrypt.Net.BCrypt.HashPassword(password),
+            Rol = RolUsuario.Paciente,
+            PacienteId = paciente.Id
         };
         await _usuarioRepositorio.AgregarAsync(usuario);
         return usuario;
@@ -54,8 +82,7 @@ public class AuthServicio : IAuthServicio
             new Claim(ClaimTypes.Email, usuario.Email),
             new Claim(ClaimTypes.Role, usuario.Rol.ToString()),
             new Claim("usuarioId", usuario.Id.ToString()),
-            new Claim("pacienteId", usuario.PacienteId?.ToString() ?? ""),
-            new Claim("medicoId", usuario.MedicoId?.ToString() ?? "")
+            new Claim("pacienteId", usuario.PacienteId?.ToString() ?? "")
         };
 
         var token = new JwtSecurityToken(

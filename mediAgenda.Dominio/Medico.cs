@@ -6,6 +6,7 @@ public class Medico
     public string Nombre { get; set; }
     public string Apellido { get; set; }
     public string Email { get; set; }
+    public string? Cedula { get; set; }
     public int EspecialidadId { get; set; }
     public Especialidad Especialidad { get; set; }
     public int SedeId { get; set; }

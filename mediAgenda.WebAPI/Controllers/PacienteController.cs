@@ -19,6 +19,7 @@ public class PacienteController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,Administrativo")]
     public async Task<IActionResult> ObtenerTodos()
     {
         var pacientes = await _servicio.ObtenerTodosAsync();
@@ -35,6 +36,7 @@ public class PacienteController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Admin,Administrativo")]
     public async Task<IActionResult> ObtenerPorId(int id)
     {
         var paciente = await _servicio.ObtenerPorIdAsync(id);

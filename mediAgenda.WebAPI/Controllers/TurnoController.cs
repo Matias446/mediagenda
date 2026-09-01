@@ -19,7 +19,7 @@ public class TurnoController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Administrativo")]
     public async Task<IActionResult> ObtenerTodos()
     {
         var turnos = await _servicio.ObtenerTodosAsync();
@@ -52,8 +52,14 @@ public class TurnoController : ControllerBase
     }
 
     [HttpGet("paciente/{pacienteId}")]
+    [Authorize(Roles = "Paciente,Admin")]
     public async Task<IActionResult> ObtenerPorPaciente(int pacienteId)
-        => Ok(await _servicio.ObtenerPorPacienteAsync(pacienteId));
+    {
+        if (User.IsInRole("Paciente") && User.FindFirst("pacienteId")?.Value != pacienteId.ToString())
+            return Forbid();
+
+        return Ok(await _servicio.ObtenerPorPacienteAsync(pacienteId));
+    }
 
     [HttpGet("medico/{medicoId}")]
     public async Task<IActionResult> ObtenerPorMedico(int medicoId)

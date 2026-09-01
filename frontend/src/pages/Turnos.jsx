@@ -1,26 +1,33 @@
 import { useEffect, useState } from 'react'
+import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 
 function Turnos() {
+  const { rol, pacienteId } = useAuth()
+  const esPaciente = rol === 'Paciente'
+
   const [turnos, setTurnos] = useState([])
   const [medicos, setMedicos] = useState([])
   const [pacientes, setPacientes] = useState([])
-  const [slotsDisponibles, setSlotsDisponibles] = useState([])
   const [loading, setLoading] = useState(true)
+  const [slotsDisponibles, setSlotsDisponibles] = useState([])
   const [form, setForm] = useState({
     pacienteId: '', medicoId: '', fecha: '', slotSeleccionado: ''
   })
 
   const cargarDatos = async () => {
     try {
-      const [turnosRes, medicosRes, pacientesRes] = await Promise.all([
-        api.get('/Turno'),
-        api.get('/Medico'),
-        api.get('/Paciente')
-      ])
+      const turnosPromise = esPaciente
+        ? api.get(`/Turno/paciente/${pacienteId}`)
+        : api.get('/Turno')
+
+      const requests = [turnosPromise, api.get('/Medico')]
+      if (!esPaciente) requests.push(api.get('/Paciente'))
+
+      const [turnosRes, medicosRes, pacientesRes] = await Promise.all(requests)
       setTurnos(turnosRes.data)
       setMedicos(medicosRes.data)
-      setPacientes(pacientesRes.data)
+      if (!esPaciente) setPacientes(pacientesRes.data)
     } catch (error) {
       console.error(error)
     } finally {
@@ -57,10 +64,11 @@ function Turnos() {
   }
 
   const crear = async () => {
-    if (!form.pacienteId || !form.medicoId || !form.slotSeleccionado) return
+    const idPaciente = esPaciente ? pacienteId : form.pacienteId
+    if (!idPaciente || !form.medicoId || !form.slotSeleccionado) return
     try {
       await api.post('/Turno', {
-        pacienteId: parseInt(form.pacienteId),
+        pacienteId: parseInt(idPaciente),
         medicoId: parseInt(form.medicoId),
         fechaHora: new Date(form.slotSeleccionado).toISOString()
       })
@@ -96,17 +104,25 @@ function Turnos() {
     return date.toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit' })
   }
 
+  const puedeCrear = esPaciente
+    ? (form.medicoId && form.slotSeleccionado)
+    : (form.pacienteId && form.medicoId && form.slotSeleccionado)
+
   return (
     <div className="max-w-3xl mx-auto mt-6 px-4 pb-10">
-      <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Turnos</h1>
+      <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">
+        {esPaciente ? 'Mis Turnos' : 'Turnos'}
+      </h1>
 
       <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6 shadow-sm space-y-3">
-        <select value={form.pacienteId}
-          onChange={e => setForm({ ...form, pacienteId: e.target.value })}
-          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="">Seleccioná un paciente</option>
-          {pacientes.map(p => <option key={p.id} value={p.id}>{p.nombre} {p.apellido}</option>)}
-        </select>
+        {!esPaciente && (
+          <select value={form.pacienteId}
+            onChange={e => setForm({ ...form, pacienteId: e.target.value })}
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Seleccioná un paciente</option>
+            {pacientes.map(p => <option key={p.id} value={p.id}>{p.nombre} {p.apellido}</option>)}
+          </select>
+        )}
 
         <select value={form.medicoId} onChange={handleMedicoChange}
           className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -145,7 +161,7 @@ function Turnos() {
         )}
 
         <button onClick={crear}
-          disabled={!form.pacienteId || !form.medicoId || !form.slotSeleccionado}
+          disabled={!puedeCrear}
           className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed">
           Reservar Turno
         </button>
@@ -160,7 +176,7 @@ function Turnos() {
               <div className="flex justify-between items-start">
                 <div>
                   <p className="font-medium text-gray-800">
-                    Paciente #{t.pacienteId} · Médico #{t.medicoId}
+                    {esPaciente ? `Médico #${t.medicoId}` : `Paciente #${t.pacienteId} · Médico #${t.medicoId}`}
                   </p>
                   <p className="text-sm text-gray-500 mt-1">
                     {new Date(t.fechaHora).toLocaleString('es-UY')}

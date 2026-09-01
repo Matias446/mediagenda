@@ -8,13 +8,11 @@ public class Usuario
     public RolUsuario Rol { get; set; }
     public int? PacienteId { get; set; }
     public Paciente? Paciente { get; set; }
-    public int? MedicoId { get; set; }
-    public Medico? Medico { get; set; }
 }
 
 public enum RolUsuario
 {
-    Admin,
-    Paciente,
-    Medico
+    Admin = 0,
+    Paciente = 1,
+    Administrativo = 3
 }
