@@ -72,6 +72,9 @@ public class MedicoController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Crear([FromBody] CrearMedicoDTO dto)
     {
+        if (!string.IsNullOrWhiteSpace(dto.Cedula) && await ExisteOtraCedulaAsync(dto.Cedula, idAExcluir: null))
+            throw new InvalidOperationException("Ya existe un médico con esta cédula.");
+
         var medico = new Medico
         {
             Nombre = dto.Nombre,
@@ -99,6 +102,9 @@ public class MedicoController : ControllerBase
         var medico = await _servicio.ObtenerPorIdAsync(id);
         if (medico == null) return NotFound();
 
+        if (!string.IsNullOrWhiteSpace(dto.Cedula) && await ExisteOtraCedulaAsync(dto.Cedula, idAExcluir: id))
+            throw new InvalidOperationException("Ya existe otro médico con esta cédula.");
+
         medico.Nombre = dto.Nombre;
         medico.Apellido = dto.Apellido;
         medico.Email = dto.Email;
@@ -124,5 +130,11 @@ public class MedicoController : ControllerBase
     {
         await _servicio.EliminarAsync(id);
         return NoContent();
+    }
+
+    private async Task<bool> ExisteOtraCedulaAsync(string cedula, int? idAExcluir)
+    {
+        var medicos = await _servicio.ObtenerTodosAsync();
+        return medicos.Any(m => m.Cedula == cedula && m.Id != idAExcluir);
     }
 }

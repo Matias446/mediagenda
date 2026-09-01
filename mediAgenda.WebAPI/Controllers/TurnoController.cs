@@ -40,6 +40,8 @@ public class TurnoController : ControllerBase
     {
         var turno = await _servicio.ObtenerPorIdAsync(id);
         if (turno == null) return NotFound();
+        if (EsPacienteAjeno(turno.PacienteId)) return Forbid();
+
         return Ok(new TurnoDTO
         {
             Id = turno.Id,
@@ -55,8 +57,7 @@ public class TurnoController : ControllerBase
     [Authorize(Roles = "Paciente,Admin")]
     public async Task<IActionResult> ObtenerPorPaciente(int pacienteId)
     {
-        if (User.IsInRole("Paciente") && User.FindFirst("pacienteId")?.Value != pacienteId.ToString())
-            return Forbid();
+        if (EsPacienteAjeno(pacienteId)) return Forbid();
 
         return Ok(await _servicio.ObtenerPorPacienteAsync(pacienteId));
     }
@@ -77,6 +78,8 @@ public class TurnoController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Crear([FromBody] CrearTurnoDTO dto)
     {
+        if (EsPacienteAjeno(dto.PacienteId)) return Forbid();
+
         var turno = new Turno
         {
             PacienteId = dto.PacienteId,
@@ -99,7 +102,14 @@ public class TurnoController : ControllerBase
     [HttpPut("{id}/cancelar")]
     public async Task<IActionResult> Cancelar(int id)
     {
+        var turno = await _servicio.ObtenerPorIdAsync(id);
+        if (turno == null) return NotFound();
+        if (EsPacienteAjeno(turno.PacienteId)) return Forbid();
+
         await _servicio.CancelarAsync(id);
         return NoContent();
     }
+
+    private bool EsPacienteAjeno(int pacienteId)
+        => User.IsInRole("Paciente") && User.FindFirst("pacienteId")?.Value != pacienteId.ToString();
 }

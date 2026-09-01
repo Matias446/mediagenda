@@ -17,6 +17,10 @@ public class MediAgendaContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Usuario>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
         modelBuilder.Entity<Paciente>()
             .HasIndex(p => p.Email)
             .IsUnique();

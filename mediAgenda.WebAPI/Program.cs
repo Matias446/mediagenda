@@ -32,16 +32,19 @@ builder.Services.AddScoped<IAuthServicio, AuthServicio>();
 
 
 
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? new[]
+    {
+        "http://localhost:5173",
+        "https://mediagenda-sand.vercel.app",
+        "https://mediagenda-git-master-medi-agenda1.vercel.app"
+    };
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.SetIsOriginAllowed(origin =>
-                origin == "http://localhost:5173" ||
-                (Uri.TryCreate(origin, UriKind.Absolute, out var uri)
-                    && uri.Scheme == "https"
-                    && uri.Host.EndsWith(".vercel.app")
-                    && uri.Host.StartsWith("mediagenda-")))
+        policy.WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod();
     });

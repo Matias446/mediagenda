@@ -53,7 +53,6 @@ public class PacienteController : ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
     public async Task<IActionResult> Crear([FromBody] CrearPacienteDTO dto)
     {
         var paciente = new Paciente

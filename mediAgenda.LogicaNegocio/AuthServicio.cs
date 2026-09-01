@@ -49,27 +49,40 @@ public class AuthServicio : IAuthServicio
         if (pacientes.Any(p => p.Email == email))
             throw new InvalidOperationException("Ya existe un paciente registrado con este email.");
 
+        var usuarios = await _usuarioRepositorio.ObtenerTodosAsync();
+        if (usuarios.Any(u => u.Email == email))
+            throw new InvalidOperationException("Ya existe una cuenta registrada con este email.");
+
+        var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
         var paciente = new Paciente
         {
             Nombre = nombre,
             Apellido = apellido,
             Email = email,
-            Password = BCrypt.Net.BCrypt.HashPassword(password),
+            Password = passwordHash,
             Cedula = cedula,
             Telefono = telefono,
             FechaNacimiento = DateTime.SpecifyKind(fechaNacimiento, DateTimeKind.Utc)
         };
         await _pacienteRepositorio.AgregarAsync(paciente);
 
-        var usuario = new Usuario
+        try
         {
-            Email = email,
-            Password = BCrypt.Net.BCrypt.HashPassword(password),
-            Rol = RolUsuario.Paciente,
-            PacienteId = paciente.Id
-        };
-        await _usuarioRepositorio.AgregarAsync(usuario);
-        return usuario;
+            var usuario = new Usuario
+            {
+                Email = email,
+                Password = passwordHash,
+                Rol = RolUsuario.Paciente,
+                PacienteId = paciente.Id
+            };
+            await _usuarioRepositorio.AgregarAsync(usuario);
+            return usuario;
+        }
+        catch
+        {
+            await _pacienteRepositorio.EliminarAsync(paciente.Id);
+            throw;
+        }
     }
 
     private string GenerarToken(Usuario usuario)

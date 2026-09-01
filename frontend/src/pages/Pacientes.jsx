@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
+import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 
 function Pacientes() {
+  const { rol } = useAuth()
+  const esAdmin = rol === 'Admin'
+
   const [pacientes, setPacientes] = useState([])
   const [loading, setLoading] = useState(true)
   const [form, setForm] = useState({
@@ -48,6 +52,7 @@ function Pacientes() {
     <div className="max-w-3xl mx-auto mt-6 px-4 pb-10">
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Pacientes</h1>
 
+      {esAdmin && (
       <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6 shadow-sm space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <input type="text" placeholder="Nombre" value={form.nombre}
@@ -84,6 +89,7 @@ function Pacientes() {
           Agregar Paciente
         </button>
       </div>
+      )}
 
       {loading ? (
         <p className="text-gray-500">Cargando...</p>
@@ -95,10 +101,12 @@ function Pacientes() {
                 <p className="font-medium text-gray-800">{p.nombre} {p.apellido}</p>
                 <p className="text-sm text-gray-500">{p.email} · {p.cedula}</p>
               </div>
-              <button onClick={() => eliminar(p.id)}
-                className="text-red-500 hover:text-red-700 text-sm font-medium ml-4">
-                Eliminar
-              </button>
+              {esAdmin && (
+                <button onClick={() => eliminar(p.id)}
+                  className="text-red-500 hover:text-red-700 text-sm font-medium ml-4">
+                  Eliminar
+                </button>
+              )}
             </li>
           ))}
         </ul>
