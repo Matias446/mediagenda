@@ -5,3 +5,7 @@
 *.user
 .vs/
 .idea/
+node_modules/
+.env
+.env.*
+!.env.example
