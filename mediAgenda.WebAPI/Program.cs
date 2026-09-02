@@ -165,6 +165,7 @@ else
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "mediAgenda API v1");
         c.RoutePrefix = "swagger";
     });
+    app.UseHttpsRedirection();
 }
 
 app.UseCors("AllowFrontend");
