@@ -49,6 +49,9 @@ public class TurnoServicio : ITurnoServicio
 
     public async Task<Turno> CrearAsync(Turno turno)
     {
+        if (turno.FechaHora <= DateTime.UtcNow)
+            throw new InvalidOperationException("No se puede reservar un turno en una fecha pasada");
+
         turno.Estado = EstadoTurno.Pendiente;
         await _repositorio.AgregarAsync(turno);
         return (await ConNombresAsync(new[] { turno })).First();
