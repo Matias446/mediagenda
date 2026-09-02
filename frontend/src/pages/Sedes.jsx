@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import api from '../services/api'
 
 function Sedes() {
@@ -27,8 +28,9 @@ function Sedes() {
       await api.post('/Sede', form)
       setForm({ nombre: '', direccion: '', telefono: '' })
       await cargarSedes()
+      toast.success('Sede creada correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo crear la sede')
     }
   }
 
@@ -36,8 +38,9 @@ function Sedes() {
     try {
       await api.delete(`/Sede/${id}`)
       await cargarSedes()
+      toast.success('Sede eliminada correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo eliminar la sede')
     }
   }
 

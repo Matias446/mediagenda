@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import api from '../services/api'
 
 function Especialidades() {
@@ -28,8 +29,9 @@ function Especialidades() {
       await api.post('/Especialidad', { nombre })
       setNombre('')
       await cargarEspecialidades()
+      toast.success('Especialidad creada correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo crear la especialidad')
     }
   }
 
@@ -37,8 +39,9 @@ function Especialidades() {
     try {
       await api.delete(`/Especialidad/${id}`)
       await cargarEspecialidades()
+      toast.success('Especialidad eliminada correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo eliminar la especialidad')
     }
   }
 

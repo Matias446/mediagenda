@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 
@@ -75,8 +76,9 @@ function Turnos() {
       setForm({ pacienteId: '', medicoId: '', fecha: '', slotSeleccionado: '' })
       setSlotsDisponibles([])
       await cargarDatos()
+      toast.success('Turno reservado correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo reservar el turno')
     }
   }
 
@@ -84,8 +86,9 @@ function Turnos() {
     try {
       await api.put(`/Turno/${id}/cancelar`)
       await cargarDatos()
+      toast.success('Turno cancelado correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo cancelar el turno')
     }
   }
 

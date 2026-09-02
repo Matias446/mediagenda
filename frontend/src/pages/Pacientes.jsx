@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 
@@ -34,8 +35,9 @@ function Pacientes() {
       await api.post('/Paciente', form)
       setForm({ nombre: '', apellido: '', email: '', password: '', cedula: '', telefono: '', fechaNacimiento: '' })
       await cargarPacientes()
+      toast.success('Paciente creado correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo crear el paciente')
     }
   }
 
@@ -43,8 +45,9 @@ function Pacientes() {
     try {
       await api.delete(`/Paciente/${id}`)
       await cargarPacientes()
+      toast.success('Paciente eliminado correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo eliminar el paciente')
     }
   }
 

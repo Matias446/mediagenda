@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 
@@ -47,8 +48,9 @@ function Medicos() {
       })
       setForm({ nombre: '', apellido: '', email: '', cedula: '', especialidadId: '', sedeId: '' })
       await cargarDatos()
+      toast.success('Médico creado correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo crear el médico')
     }
   }
 
@@ -56,8 +58,9 @@ function Medicos() {
     try {
       await api.delete(`/Medico/${id}`)
       await cargarDatos()
+      toast.success('Médico eliminado correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo eliminar el médico')
     }
   }
 
@@ -79,8 +82,9 @@ function Medicos() {
       setEditandoId(null)
       setFormEdicion(null)
       await cargarDatos()
+      toast.success('Médico actualizado correctamente')
     } catch (error) {
-      console.error(error)
+      toast.error(error.response?.data?.mensaje || 'No se pudo actualizar el médico')
     }
   }
 

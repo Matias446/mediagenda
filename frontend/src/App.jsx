@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/AuthContext.jsx'
 import Navbar from './components/Navbar'
 import RutaProtegida from './components/RutaProtegida'
@@ -15,6 +16,13 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Toaster
+          toastOptions={{
+            duration: 3000,
+            success: { style: { background: '#16a34a', color: '#fff' } },
+            error: { style: { background: '#dc2626', color: '#fff' } },
+          }}
+        />
         <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
