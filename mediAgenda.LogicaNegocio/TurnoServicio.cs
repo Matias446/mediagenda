@@ -87,10 +87,16 @@ public class TurnoServicio : ITurnoServicio
         return lista;
     }
 
-    public async Task CancelarAsync(int id)
+    public async Task CancelarAsync(int id, string rolUsuario, int? pacienteIdUsuario)
     {
         var turno = await _repositorio.ObtenerPorIdAsync(id);
-        if (turno == null) throw new Exception("Turno no encontrado");
+        if (turno == null) throw new KeyNotFoundException("Turno no encontrado");
+
+        var esDueño = pacienteIdUsuario.HasValue && turno.PacienteId == pacienteIdUsuario.Value;
+        var puedeGestionarCualquiera = rolUsuario is "Admin" or "Administrativo";
+        if (!esDueño && !puedeGestionarCualquiera)
+            throw new UnauthorizedAccessException("No podés cancelar el turno de otro paciente");
+
         turno.Estado = EstadoTurno.Cancelado;
         await _repositorio.ActualizarAsync(turno);
     }

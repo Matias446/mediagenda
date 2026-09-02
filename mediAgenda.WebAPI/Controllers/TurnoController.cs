@@ -81,11 +81,10 @@ public class TurnoController : ControllerBase
     [HttpPut("{id}/cancelar")]
     public async Task<IActionResult> Cancelar(int id)
     {
-        var turno = await _servicio.ObtenerPorIdAsync(id);
-        if (turno == null) return NotFound();
-        if (EsPacienteAjeno(turno.PacienteId)) return Forbid();
+        var rol = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "";
+        var pacienteIdUsuario = int.TryParse(User.FindFirst("pacienteId")?.Value, out var pid) ? pid : (int?)null;
 
-        await _servicio.CancelarAsync(id);
+        await _servicio.CancelarAsync(id, rol, pacienteIdUsuario);
         return NoContent();
     }
 
