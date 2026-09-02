@@ -47,7 +47,7 @@ function Login() {
         </div>
 
         <p className="text-sm text-gray-500 text-center mt-6">
-          ¿No tenés cuenta? <Link to="/register" className="text-blue-600 font-medium hover:underline">Registrate</Link>
+          ¿No tenés cuenta? <Link to="/registro" className="text-blue-600 font-medium hover:underline">Registrate</Link>
         </p>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 
-function Register() {
+function Registro() {
   const [form, setForm] = useState({
     email: '', password: '', confirmPassword: '',
     cedula: '', nombre: '', apellido: '', telefono: '', fechaNacimiento: ''
@@ -84,9 +84,10 @@ function Register() {
         <p className="text-sm text-gray-500 text-center mt-6">
           ¿Ya tenés cuenta? <Link to="/login" className="text-blue-600 font-medium hover:underline">Iniciá sesión</Link>
         </p>
+
       </div>
     </div>
   )
 }
 
-export default Register
+export default Registro

@@ -41,7 +41,7 @@ public class AuthServicio : IAuthServicio
     {
         var medicos = await _medicoRepositorio.ObtenerTodosAsync();
         if (medicos.Any(m => m.Cedula == cedula))
-            throw new InvalidOperationException("Esta cédula corresponde a un médico. Contactá al administrador.");
+            throw new InvalidOperationException("Esta cédula pertenece a un médico registrado. Contactá al administrador.");
 
         var pacientes = await _pacienteRepositorio.ObtenerTodosAsync();
         if (pacientes.Any(p => p.Cedula == cedula))
