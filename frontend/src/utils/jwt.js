@@ -1,4 +1,4 @@
-const CLAIM_ROL = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role'
+const CLAIM_ROL = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
 const CLAIM_EMAIL = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
 
 export function decodeToken(token) {
