@@ -17,8 +17,16 @@ public class TurnoServicio : ITurnoServicio
         _pacienteRepositorio = pacienteRepositorio;
     }
 
+    private const int DiasVisibilidadCancelados = 30;
+
+    private static bool EsVisibleEnListado(Turno t)
+        => t.Estado != EstadoTurno.Cancelado || t.FechaHora >= DateTime.UtcNow.AddDays(-DiasVisibilidadCancelados);
+
     public async Task<IEnumerable<Turno>> ObtenerTodosAsync()
-        => await ConNombresAsync(await _repositorio.ObtenerTodosAsync());
+    {
+        var turnos = (await _repositorio.ObtenerTodosAsync()).Where(EsVisibleEnListado);
+        return await ConNombresAsync(turnos);
+    }
 
     public async Task<Turno?> ObtenerPorIdAsync(int id)
     {
@@ -30,13 +38,13 @@ public class TurnoServicio : ITurnoServicio
     public async Task<IEnumerable<Turno>> ObtenerPorPacienteAsync(int pacienteId)
     {
         var turnos = await _repositorio.ObtenerTodosAsync();
-        return await ConNombresAsync(turnos.Where(t => t.PacienteId == pacienteId));
+        return await ConNombresAsync(turnos.Where(t => t.PacienteId == pacienteId).Where(EsVisibleEnListado));
     }
 
     public async Task<IEnumerable<Turno>> ObtenerPorMedicoAsync(int medicoId)
     {
         var turnos = await _repositorio.ObtenerTodosAsync();
-        return await ConNombresAsync(turnos.Where(t => t.MedicoId == medicoId));
+        return await ConNombresAsync(turnos.Where(t => t.MedicoId == medicoId).Where(EsVisibleEnListado));
     }
 
     public async Task<Turno> CrearAsync(Turno turno)
