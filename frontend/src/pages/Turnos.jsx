@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
+import ModalConfirmacion from '../components/ModalConfirmacion'
 
 function Turnos() {
   const { rol, pacienteId } = useAuth()
@@ -15,6 +16,7 @@ function Turnos() {
   const [form, setForm] = useState({
     pacienteId: '', medicoId: '', fecha: '', slotSeleccionado: ''
   })
+  const [aCancelar, setACancelar] = useState(null)
 
   const cargarDatos = async () => {
     try {
@@ -89,6 +91,8 @@ function Turnos() {
       toast.success('Turno cancelado correctamente')
     } catch (error) {
       toast.error(error.response?.data?.mensaje || 'No se pudo cancelar el turno')
+    } finally {
+      setACancelar(null)
     }
   }
 
@@ -187,7 +191,7 @@ function Turnos() {
                   <p className={`text-sm font-medium mt-1 ${estadoColor(t.estado)}`}>{t.estado}</p>
                 </div>
                 {t.estado === 'Pendiente' && (
-                  <button onClick={() => cancelar(t.id)}
+                  <button onClick={() => setACancelar(t)}
                     className="text-red-500 hover:text-red-700 text-sm font-medium ml-4">
                     Cancelar
                   </button>
@@ -197,6 +201,15 @@ function Turnos() {
           ))}
         </ul>
       )}
+
+      <ModalConfirmacion
+        abierto={!!aCancelar}
+        mensaje="¿Estás seguro que querés cancelar este turno? Esta acción no se puede deshacer."
+        textoCancelar="Volver"
+        textoConfirmar="Sí, cancelar turno"
+        onConfirmar={() => cancelar(aCancelar.id)}
+        onCancelar={() => setACancelar(null)}
+      />
     </div>
   )
 }

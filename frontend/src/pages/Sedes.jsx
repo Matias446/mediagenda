@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import api from '../services/api'
+import ModalConfirmacion from '../components/ModalConfirmacion'
 
 function Sedes() {
   const [sedes, setSedes] = useState([])
   const [loading, setLoading] = useState(true)
   const [form, setForm] = useState({ nombre: '', direccion: '', telefono: '' })
+  const [aEliminar, setAEliminar] = useState(null)
 
   const cargarSedes = async () => {
     try {
@@ -41,6 +43,8 @@ function Sedes() {
       toast.success('Sede eliminada correctamente')
     } catch (error) {
       toast.error(error.response?.data?.mensaje || 'No se pudo eliminar la sede')
+    } finally {
+      setAEliminar(null)
     }
   }
 
@@ -74,7 +78,7 @@ function Sedes() {
                 <p className="font-medium text-gray-800">{s.nombre}</p>
                 <p className="text-sm text-gray-500">{s.direccion} · {s.telefono}</p>
               </div>
-              <button onClick={() => eliminar(s.id)}
+              <button onClick={() => setAEliminar(s)}
                 className="text-red-500 hover:text-red-700 text-sm font-medium ml-4">
                 Eliminar
               </button>
@@ -82,6 +86,13 @@ function Sedes() {
           ))}
         </ul>
       )}
+
+      <ModalConfirmacion
+        abierto={!!aEliminar}
+        mensaje={`¿Estás seguro que querés eliminar ${aEliminar?.nombre}? Esta acción no se puede deshacer.`}
+        onConfirmar={() => eliminar(aEliminar.id)}
+        onCancelar={() => setAEliminar(null)}
+      />
     </div>
   )
 }

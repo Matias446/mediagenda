@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
+import ModalConfirmacion from '../components/ModalConfirmacion'
 
 function Medicos() {
   const { rol } = useAuth()
@@ -16,6 +17,7 @@ function Medicos() {
   })
   const [editandoId, setEditandoId] = useState(null)
   const [formEdicion, setFormEdicion] = useState(null)
+  const [aEliminar, setAEliminar] = useState(null)
 
   const cargarDatos = async () => {
     try {
@@ -61,6 +63,8 @@ function Medicos() {
       toast.success('Médico eliminado correctamente')
     } catch (error) {
       toast.error(error.response?.data?.mensaje || 'No se pudo eliminar el médico')
+    } finally {
+      setAEliminar(null)
     }
   }
 
@@ -190,7 +194,7 @@ function Medicos() {
                         className="text-blue-600 hover:text-blue-800 text-sm font-medium">
                         Editar
                       </button>
-                      <button onClick={() => eliminar(m.id)}
+                      <button onClick={() => setAEliminar(m)}
                         className="text-red-500 hover:text-red-700 text-sm font-medium">
                         Eliminar
                       </button>
@@ -202,6 +206,13 @@ function Medicos() {
           ))}
         </ul>
       )}
+
+      <ModalConfirmacion
+        abierto={!!aEliminar}
+        mensaje={`¿Estás seguro que querés eliminar ${aEliminar?.nombre} ${aEliminar?.apellido}? Esta acción no se puede deshacer.`}
+        onConfirmar={() => eliminar(aEliminar.id)}
+        onCancelar={() => setAEliminar(null)}
+      />
     </div>
   )
 }

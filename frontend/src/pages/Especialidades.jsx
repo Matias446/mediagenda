@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import api from '../services/api'
+import ModalConfirmacion from '../components/ModalConfirmacion'
 
 function Especialidades() {
   const [especialidades, setEspecialidades] = useState([])
   const [loading, setLoading] = useState(true)
   const [nombre, setNombre] = useState('')
+  const [aEliminar, setAEliminar] = useState(null)
 
   const cargarEspecialidades = async () => {
     try {
@@ -42,6 +44,8 @@ function Especialidades() {
       toast.success('Especialidad eliminada correctamente')
     } catch (error) {
       toast.error(error.response?.data?.mensaje || 'No se pudo eliminar la especialidad')
+    } finally {
+      setAEliminar(null)
     }
   }
 
@@ -67,7 +71,7 @@ function Especialidades() {
           {especialidades.map(e => (
             <li key={e.id} className="flex justify-between items-center bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
               <span className="text-gray-800">{e.nombre}</span>
-              <button onClick={() => eliminar(e.id)}
+              <button onClick={() => setAEliminar(e)}
                 className="text-red-500 hover:text-red-700 text-sm font-medium">
                 Eliminar
               </button>
@@ -75,6 +79,13 @@ function Especialidades() {
           ))}
         </ul>
       )}
+
+      <ModalConfirmacion
+        abierto={!!aEliminar}
+        mensaje={`¿Estás seguro que querés eliminar ${aEliminar?.nombre}? Esta acción no se puede deshacer.`}
+        onConfirmar={() => eliminar(aEliminar.id)}
+        onCancelar={() => setAEliminar(null)}
+      />
     </div>
   )
 }
