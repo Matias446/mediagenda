@@ -6,10 +6,15 @@ using mediAgenda.Dominio;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
 using AspNetCoreRateLimit;
+using mediAgenda.WebAPI.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddScoped<SanitizarInputFilter>();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<SanitizarInputFilter>();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
