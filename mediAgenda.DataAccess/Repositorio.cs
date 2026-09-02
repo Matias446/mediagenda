@@ -1,5 +1,6 @@
 using mediAgenda.IDataAccess;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace mediAgenda.DataAccess;
 
@@ -27,22 +28,42 @@ public class Repositorio<T> : IRepositorio<T> where T : class
     public async Task AgregarAsync(T entidad)
     {
         await _dbSet.AddAsync(entidad);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: "23505" })
+        {
+            throw new InvalidOperationException("Ya existe un registro con esos datos.");
+        }
     }
 
     public async Task ActualizarAsync(T entidad)
     {
         _dbSet.Update(entidad);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: "23505" })
+        {
+            throw new InvalidOperationException("Ya existe un registro con esos datos.");
+        }
     }
 
     public async Task EliminarAsync(int id)
     {
         var entidad = await ObtenerPorIdAsync(id);
-        if (entidad != null)
+        if (entidad == null) return;
+
+        _dbSet.Remove(entidad);
+        try
         {
-            _dbSet.Remove(entidad);
             await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: "23503" })
+        {
+            throw new InvalidOperationException("No se puede eliminar: hay otros registros que dependen de este.");
         }
     }
 }

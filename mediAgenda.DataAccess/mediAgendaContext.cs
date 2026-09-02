@@ -45,6 +45,11 @@ public class MediAgendaContext : DbContext
             .HasForeignKey(m => m.SedeId);
 
         modelBuilder.Entity<Turno>()
+            .HasIndex(t => new { t.PacienteId, t.MedicoId, t.FechaHora })
+            .IsUnique()
+            .HasFilter("\"Estado\" IN (0, 1)");
+
+        modelBuilder.Entity<Turno>()
             .HasOne(t => t.Paciente)
             .WithMany(p => p.Turnos)
             .HasForeignKey(t => t.PacienteId);

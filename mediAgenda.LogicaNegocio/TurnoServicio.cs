@@ -52,6 +52,15 @@ public class TurnoServicio : ITurnoServicio
         if (turno.FechaHora <= DateTime.UtcNow)
             throw new InvalidOperationException("No se puede reservar un turno en una fecha pasada");
 
+        var turnosExistentes = await _repositorio.ObtenerTodosAsync();
+        var yaReservado = turnosExistentes.Any(t =>
+            t.PacienteId == turno.PacienteId
+            && t.MedicoId == turno.MedicoId
+            && t.FechaHora == turno.FechaHora
+            && (t.Estado == EstadoTurno.Pendiente || t.Estado == EstadoTurno.Confirmado));
+        if (yaReservado)
+            throw new InvalidOperationException("Ya tenés un turno reservado en ese horario");
+
         turno.Estado = EstadoTurno.Pendiente;
         await _repositorio.AgregarAsync(turno);
         return (await ConNombresAsync(new[] { turno })).First();
