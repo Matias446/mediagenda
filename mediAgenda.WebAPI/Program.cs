@@ -32,19 +32,28 @@ builder.Services.AddScoped<IAuthServicio, AuthServicio>();
 
 
 
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+var pinnedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
     ?? new[]
     {
         "http://localhost:5173",
-        "https://mediagenda-sand.vercel.app",
-        "https://mediagenda-git-master-medi-agenda1.vercel.app"
+        "https://mediagenda-sand.vercel.app"
     };
+
+// Vercel genera una URL nueva por cada deploy/preview (hash aleatorio o nombre de
+// rama), así que además de los orígenes fijos de arriba, se permite cualquier
+// subdominio que termine en "-medi-agenda1.vercel.app": ese sufijo es el slug del
+// equipo de Vercel del proyecto, no adivinable ni reclamable por terceros.
+const string vercelTeamSuffix = "-medi-agenda1.vercel.app";
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins(allowedOrigins)
+        policy.SetIsOriginAllowed(origin =>
+                pinnedOrigins.Contains(origin) ||
+                (Uri.TryCreate(origin, UriKind.Absolute, out var uri)
+                    && uri.Scheme == "https"
+                    && uri.Host.EndsWith(vercelTeamSuffix, StringComparison.OrdinalIgnoreCase)))
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
