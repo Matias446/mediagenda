@@ -7,10 +7,12 @@ namespace mediAgenda.LogicaNegocio;
 public class EspecialidadServicio : IEspecialidadServicio
 {
     private readonly IRepositorio<Especialidad> _repositorio;
+    private readonly IRepositorio<Medico> _medicoRepositorio;
 
-    public EspecialidadServicio(IRepositorio<Especialidad> repositorio)
+    public EspecialidadServicio(IRepositorio<Especialidad> repositorio, IRepositorio<Medico> medicoRepositorio)
     {
         _repositorio = repositorio;
+        _medicoRepositorio = medicoRepositorio;
     }
 
     public async Task<IEnumerable<Especialidad>> ObtenerTodosAsync()
@@ -26,5 +28,11 @@ public class EspecialidadServicio : IEspecialidadServicio
     }
 
     public async Task EliminarAsync(int id)
-        => await _repositorio.EliminarAsync(id);
+    {
+        var medicos = await _medicoRepositorio.ObtenerTodosAsync();
+        if (medicos.Any(m => m.EspecialidadId == id))
+            throw new InvalidOperationException("No se puede eliminar una especialidad con médicos asignados");
+
+        await _repositorio.EliminarAsync(id);
+    }
 }

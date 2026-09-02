@@ -7,10 +7,12 @@ namespace mediAgenda.LogicaNegocio;
 public class SedeServicio : ISedeServicio
 {
     private readonly IRepositorio<Sede> _repositorio;
+    private readonly IRepositorio<Medico> _medicoRepositorio;
 
-    public SedeServicio(IRepositorio<Sede> repositorio)
+    public SedeServicio(IRepositorio<Sede> repositorio, IRepositorio<Medico> medicoRepositorio)
     {
         _repositorio = repositorio;
+        _medicoRepositorio = medicoRepositorio;
     }
 
     public async Task<IEnumerable<Sede>> ObtenerTodosAsync()
@@ -26,5 +28,11 @@ public class SedeServicio : ISedeServicio
     }
 
     public async Task EliminarAsync(int id)
-        => await _repositorio.EliminarAsync(id);
+    {
+        var medicos = await _medicoRepositorio.ObtenerTodosAsync();
+        if (medicos.Any(m => m.SedeId == id))
+            throw new InvalidOperationException("No se puede eliminar una sede con médicos asignados");
+
+        await _repositorio.EliminarAsync(id);
+    }
 }
