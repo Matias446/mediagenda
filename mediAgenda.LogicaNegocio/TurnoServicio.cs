@@ -8,36 +8,60 @@ public class TurnoServicio : ITurnoServicio
 {
     private readonly IRepositorio<Turno> _repositorio;
     private readonly IRepositorio<Medico> _medicoRepositorio;
+    private readonly IRepositorio<Paciente> _pacienteRepositorio;
 
-    public TurnoServicio(IRepositorio<Turno> repositorio, IRepositorio<Medico> medicoRepositorio)
+    public TurnoServicio(IRepositorio<Turno> repositorio, IRepositorio<Medico> medicoRepositorio, IRepositorio<Paciente> pacienteRepositorio)
     {
         _repositorio = repositorio;
         _medicoRepositorio = medicoRepositorio;
+        _pacienteRepositorio = pacienteRepositorio;
     }
 
     public async Task<IEnumerable<Turno>> ObtenerTodosAsync()
-        => await _repositorio.ObtenerTodosAsync();
+        => await ConNombresAsync(await _repositorio.ObtenerTodosAsync());
 
     public async Task<Turno?> ObtenerPorIdAsync(int id)
-        => await _repositorio.ObtenerPorIdAsync(id);
+    {
+        var turno = await _repositorio.ObtenerPorIdAsync(id);
+        if (turno == null) return null;
+        return (await ConNombresAsync(new[] { turno })).First();
+    }
 
     public async Task<IEnumerable<Turno>> ObtenerPorPacienteAsync(int pacienteId)
     {
         var turnos = await _repositorio.ObtenerTodosAsync();
-        return turnos.Where(t => t.PacienteId == pacienteId);
+        return await ConNombresAsync(turnos.Where(t => t.PacienteId == pacienteId));
     }
 
     public async Task<IEnumerable<Turno>> ObtenerPorMedicoAsync(int medicoId)
     {
         var turnos = await _repositorio.ObtenerTodosAsync();
-        return turnos.Where(t => t.MedicoId == medicoId);
+        return await ConNombresAsync(turnos.Where(t => t.MedicoId == medicoId));
     }
 
     public async Task<Turno> CrearAsync(Turno turno)
     {
         turno.Estado = EstadoTurno.Pendiente;
         await _repositorio.AgregarAsync(turno);
-        return turno;
+        return (await ConNombresAsync(new[] { turno })).First();
+    }
+
+    private async Task<IEnumerable<Turno>> ConNombresAsync(IEnumerable<Turno> turnos)
+    {
+        var lista = turnos.ToList();
+        if (lista.Count == 0) return lista;
+
+        var pacientes = (await _pacienteRepositorio.ObtenerTodosAsync()).ToDictionary(p => p.Id);
+        var medicos = (await _medicoRepositorio.ObtenerTodosAsync()).ToDictionary(m => m.Id);
+
+        foreach (var turno in lista)
+        {
+            pacientes.TryGetValue(turno.PacienteId, out var paciente);
+            turno.Paciente = paciente!;
+            medicos.TryGetValue(turno.MedicoId, out var medico);
+            turno.Medico = medico!;
+        }
+        return lista;
     }
 
     public async Task CancelarAsync(int id)

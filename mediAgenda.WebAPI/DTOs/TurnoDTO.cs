@@ -6,7 +6,9 @@ public class TurnoDTO
 {
     public int Id { get; set; }
     public int PacienteId { get; set; }
+    public string? NombrePaciente { get; set; }
     public int MedicoId { get; set; }
+    public string? NombreMedico { get; set; }
     public DateTime FechaHora { get; set; }
     public string Estado { get; set; }
     public string? Motivo { get; set; }

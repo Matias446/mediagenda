@@ -23,16 +23,7 @@ public class TurnoController : ControllerBase
     public async Task<IActionResult> ObtenerTodos()
     {
         var turnos = await _servicio.ObtenerTodosAsync();
-        var dto = turnos.Select(t => new TurnoDTO
-        {
-            Id = t.Id,
-            PacienteId = t.PacienteId,
-            MedicoId = t.MedicoId,
-            FechaHora = t.FechaHora,
-            Estado = t.Estado.ToString(),
-            Motivo = t.Motivo
-        });
-        return Ok(dto);
+        return Ok(turnos.Select(MapearDto));
     }
 
     [HttpGet("{id}")]
@@ -42,15 +33,7 @@ public class TurnoController : ControllerBase
         if (turno == null) return NotFound();
         if (EsPacienteAjeno(turno.PacienteId)) return Forbid();
 
-        return Ok(new TurnoDTO
-        {
-            Id = turno.Id,
-            PacienteId = turno.PacienteId,
-            MedicoId = turno.MedicoId,
-            FechaHora = turno.FechaHora,
-            Estado = turno.Estado.ToString(),
-            Motivo = turno.Motivo
-        });
+        return Ok(MapearDto(turno));
     }
 
     [HttpGet("paciente/{pacienteId}")]
@@ -59,12 +42,16 @@ public class TurnoController : ControllerBase
     {
         if (EsPacienteAjeno(pacienteId)) return Forbid();
 
-        return Ok(await _servicio.ObtenerPorPacienteAsync(pacienteId));
+        var turnos = await _servicio.ObtenerPorPacienteAsync(pacienteId);
+        return Ok(turnos.Select(MapearDto));
     }
 
     [HttpGet("medico/{medicoId}")]
     public async Task<IActionResult> ObtenerPorMedico(int medicoId)
-        => Ok(await _servicio.ObtenerPorMedicoAsync(medicoId));
+    {
+        var turnos = await _servicio.ObtenerPorMedicoAsync(medicoId);
+        return Ok(turnos.Select(MapearDto));
+    }
 
     [HttpGet("disponibles")]
     [AllowAnonymous]
@@ -88,15 +75,7 @@ public class TurnoController : ControllerBase
             Motivo = dto.Motivo
         };
         var creado = await _servicio.CrearAsync(turno);
-        return CreatedAtAction(nameof(ObtenerPorId), new { id = creado.Id }, new TurnoDTO
-        {
-            Id = creado.Id,
-            PacienteId = creado.PacienteId,
-            MedicoId = creado.MedicoId,
-            FechaHora = creado.FechaHora,
-            Estado = creado.Estado.ToString(),
-            Motivo = creado.Motivo
-        });
+        return CreatedAtAction(nameof(ObtenerPorId), new { id = creado.Id }, MapearDto(creado));
     }
 
     [HttpPut("{id}/cancelar")]
@@ -112,4 +91,16 @@ public class TurnoController : ControllerBase
 
     private bool EsPacienteAjeno(int pacienteId)
         => User.IsInRole("Paciente") && User.FindFirst("pacienteId")?.Value != pacienteId.ToString();
+
+    private static TurnoDTO MapearDto(Turno t) => new()
+    {
+        Id = t.Id,
+        PacienteId = t.PacienteId,
+        NombrePaciente = t.Paciente != null ? $"{t.Paciente.Nombre} {t.Paciente.Apellido}" : null,
+        MedicoId = t.MedicoId,
+        NombreMedico = t.Medico != null ? $"{t.Medico.Nombre} {t.Medico.Apellido}" : null,
+        FechaHora = t.FechaHora,
+        Estado = t.Estado.ToString(),
+        Motivo = t.Motivo
+    };
 }

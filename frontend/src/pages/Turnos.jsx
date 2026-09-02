@@ -183,7 +183,9 @@ function Turnos() {
               <div className="flex justify-between items-start">
                 <div>
                   <p className="font-medium text-gray-800">
-                    {esPaciente ? `Médico #${t.medicoId}` : `Paciente #${t.pacienteId} · Médico #${t.medicoId}`}
+                    {esPaciente
+                      ? (t.nombreMedico || `Médico #${t.medicoId}`)
+                      : `${t.nombrePaciente || `Paciente #${t.pacienteId}`} · ${t.nombreMedico || `Médico #${t.medicoId}`}`}
                   </p>
                   <p className="text-sm text-gray-500 mt-1">
                     {new Date(t.fechaHora).toLocaleString('es-UY')}
