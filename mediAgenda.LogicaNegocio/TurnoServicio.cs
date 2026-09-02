@@ -1,6 +1,7 @@
 ﻿using mediAgenda.Dominio;
 using mediAgenda.IDataAccess;
 using mediAgenda.ILogicaNegocio;
+using Microsoft.Extensions.Logging;
 
 namespace mediAgenda.LogicaNegocio;
 
@@ -9,12 +10,14 @@ public class TurnoServicio : ITurnoServicio
     private readonly IRepositorio<Turno> _repositorio;
     private readonly IRepositorio<Medico> _medicoRepositorio;
     private readonly IRepositorio<Paciente> _pacienteRepositorio;
+    private readonly ILogger<TurnoServicio> _logger;
 
-    public TurnoServicio(IRepositorio<Turno> repositorio, IRepositorio<Medico> medicoRepositorio, IRepositorio<Paciente> pacienteRepositorio)
+    public TurnoServicio(IRepositorio<Turno> repositorio, IRepositorio<Medico> medicoRepositorio, IRepositorio<Paciente> pacienteRepositorio, ILogger<TurnoServicio> logger)
     {
         _repositorio = repositorio;
         _medicoRepositorio = medicoRepositorio;
         _pacienteRepositorio = pacienteRepositorio;
+        _logger = logger;
     }
 
     private const int DiasVisibilidadCancelados = 30;
@@ -97,7 +100,15 @@ public class TurnoServicio : ITurnoServicio
         var medico = await _medicoRepositorio.ObtenerPorIdAsync(medicoId);
         if (medico == null) return Enumerable.Empty<DateTime>();
 
-        var duracion = medico.DuracionTurnoMinutos > 0 ? medico.DuracionTurnoMinutos : 20;
+        if (medico.DuracionTurnoMinutos <= 0)
+        {
+            _logger.LogWarning(
+                "Médico {MedicoId} tiene DuracionTurnoMinutos={Duracion}; no se pueden calcular slots.",
+                medicoId, medico.DuracionTurnoMinutos);
+            return Enumerable.Empty<DateTime>();
+        }
+
+        var duracion = medico.DuracionTurnoMinutos;
 
         var turnosDelDia = (await _repositorio.ObtenerTodosAsync())
             .Where(t => t.MedicoId == medicoId
