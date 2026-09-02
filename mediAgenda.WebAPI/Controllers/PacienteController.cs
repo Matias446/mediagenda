@@ -8,7 +8,7 @@ namespace mediAgenda.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin")]
+[Authorize]
 public class PacienteController : ControllerBase
 {
     private readonly IPacienteServicio _servicio;
@@ -53,6 +53,7 @@ public class PacienteController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Crear([FromBody] CrearPacienteDTO dto)
     {
         var paciente = new Paciente
@@ -78,6 +79,7 @@ public class PacienteController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Eliminar(int id)
     {
         await _servicio.EliminarAsync(id);
