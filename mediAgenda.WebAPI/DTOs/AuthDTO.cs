@@ -53,3 +53,24 @@ public class TokenDTO
     public string Rol { get; set; }
     public int? PacienteId { get; set; }
 }
+
+public class CambiarPasswordDTO
+{
+    [Required(ErrorMessage = "La contraseña actual es requerida")]
+    public string PasswordActual { get; set; }
+
+    [Required(ErrorMessage = "La contraseña nueva es requerida")]
+    [MinLength(6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
+    public string PasswordNueva { get; set; }
+
+    [Required(ErrorMessage = "Debe confirmar la contraseña nueva")]
+    [Compare(nameof(PasswordNueva), ErrorMessage = "Las contraseñas no coinciden")]
+    public string ConfirmarPasswordNueva { get; set; }
+}
+
+public class OlvidePasswordDTO
+{
+    [Required(ErrorMessage = "El email es requerido")]
+    [EmailAddress(ErrorMessage = "Email inválido")]
+    public string Email { get; set; }
+}

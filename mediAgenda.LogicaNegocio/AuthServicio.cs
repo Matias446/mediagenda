@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace mediAgenda.LogicaNegocio;
@@ -15,17 +16,20 @@ public class AuthServicio : IAuthServicio
     private readonly IRepositorio<Paciente> _pacienteRepositorio;
     private readonly IRepositorio<Medico> _medicoRepositorio;
     private readonly IConfiguration _configuration;
+    private readonly IEmailSender _emailSender;
 
     public AuthServicio(
         IRepositorio<Usuario> usuarioRepositorio,
         IRepositorio<Paciente> pacienteRepositorio,
         IRepositorio<Medico> medicoRepositorio,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IEmailSender emailSender)
     {
         _usuarioRepositorio = usuarioRepositorio;
         _pacienteRepositorio = pacienteRepositorio;
         _medicoRepositorio = medicoRepositorio;
         _configuration = configuration;
+        _emailSender = emailSender;
     }
 
     public async Task<string?> LoginAsync(string email, string password)
@@ -87,6 +91,40 @@ public class AuthServicio : IAuthServicio
         }
     }
 
+    public async Task CambiarPasswordAsync(int usuarioId, string passwordActual, string passwordNueva)
+    {
+        var usuario = await _usuarioRepositorio.ObtenerPorIdAsync(usuarioId);
+        if (usuario == null) throw new KeyNotFoundException("Usuario no encontrado");
+        if (!BCrypt.Net.BCrypt.Verify(passwordActual, usuario.Password))
+            throw new InvalidOperationException("La contraseña actual es incorrecta");
+
+        usuario.Password = BCrypt.Net.BCrypt.HashPassword(passwordNueva);
+        usuario.TokensValidosDesde = DateTime.UtcNow;
+        await _usuarioRepositorio.ActualizarAsync(usuario);
+    }
+
+    public async Task OlvidePasswordAsync(string email)
+    {
+        var usuarios = await _usuarioRepositorio.ObtenerTodosAsync();
+        var usuario = usuarios.FirstOrDefault(u => u.Email == email);
+        if (usuario == null) return; // no revelar si el email existe o no
+
+        var passwordTemporal = GenerarPasswordTemporal();
+        usuario.Password = BCrypt.Net.BCrypt.HashPassword(passwordTemporal);
+        usuario.TokensValidosDesde = DateTime.UtcNow;
+        await _usuarioRepositorio.ActualizarAsync(usuario);
+
+        await _emailSender.EnviarAsync(
+            email,
+            "Tu nueva contraseña temporal - mediAgenda",
+            $"Generamos una contraseña temporal para tu cuenta: {passwordTemporal}\n\n" +
+            "Iniciá sesión con ella y cambiala desde tu perfil apenas puedas.");
+    }
+
+    private static string GenerarPasswordTemporal()
+        => Convert.ToBase64String(RandomNumberGenerator.GetBytes(9))
+            .Replace("+", "").Replace("/", "").Replace("=", "");
+
     private string GenerarToken(Usuario usuario)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]!));
@@ -97,7 +135,10 @@ public class AuthServicio : IAuthServicio
             new Claim(ClaimTypes.Email, usuario.Email),
             new Claim(ClaimTypes.Role, usuario.Rol.ToString()),
             new Claim("usuarioId", usuario.Id.ToString()),
-            new Claim("pacienteId", usuario.PacienteId?.ToString() ?? "")
+            new Claim("pacienteId", usuario.PacienteId?.ToString() ?? ""),
+            new Claim(JwtRegisteredClaimNames.Iat,
+                DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(),
+                ClaimValueTypes.Integer64)
         };
 
         var token = new JwtSecurityToken(

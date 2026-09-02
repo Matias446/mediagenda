@@ -7,10 +7,12 @@ namespace mediAgenda.LogicaNegocio;
 public class PacienteServicio : IPacienteServicio
 {
     private readonly IRepositorio<Paciente> _repositorio;
+    private readonly IRepositorio<Usuario> _usuarioRepositorio;
 
-    public PacienteServicio(IRepositorio<Paciente> repositorio)
+    public PacienteServicio(IRepositorio<Paciente> repositorio, IRepositorio<Usuario> usuarioRepositorio)
     {
         _repositorio = repositorio;
+        _usuarioRepositorio = usuarioRepositorio;
     }
 
     public async Task<IEnumerable<Paciente>> ObtenerTodosAsync()
@@ -29,5 +31,12 @@ public class PacienteServicio : IPacienteServicio
         => await _repositorio.ActualizarAsync(paciente);
 
     public async Task EliminarAsync(int id)
-        => await _repositorio.EliminarAsync(id);
+    {
+        var usuarios = await _usuarioRepositorio.ObtenerTodosAsync();
+        var usuario = usuarios.FirstOrDefault(u => u.PacienteId == id);
+        if (usuario != null)
+            await _usuarioRepositorio.EliminarAsync(usuario.Id);
+
+        await _repositorio.EliminarAsync(id);
+    }
 }

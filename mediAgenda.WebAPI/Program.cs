@@ -37,6 +37,12 @@ builder.Services.Configure<IpRateLimitOptions>(options =>
             Endpoint = "post:/api/auth/login",
             Period = "15m",
             Limit = 5
+        },
+        new RateLimitRule
+        {
+            Endpoint = "post:/api/auth/olvide-password",
+            Period = "15m",
+            Limit = 5
         }
     };
 });
@@ -60,6 +66,7 @@ builder.Services.AddScoped<IEspecialidadServicio, EspecialidadServicio>();
 builder.Services.AddScoped<ISedeServicio, SedeServicio>();
 builder.Services.AddScoped<ITurnoServicio, TurnoServicio>();
 builder.Services.AddScoped<IAuthServicio, AuthServicio>();
+builder.Services.AddSingleton<IEmailSender, LoggingEmailSender>();
 
 
 
@@ -103,6 +110,38 @@ builder.Services.AddAuthentication("Bearer")
             ValidAudience = builder.Configuration["JwtSettings:Audience"],
             IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
                 System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!))
+        };
+
+        // Revocación de tokens: si el usuario fue eliminado o cambió/reseteó su
+        // password después de que se emitió este token (comparando contra el
+        // claim "iat"), se rechaza aunque la firma y el vencimiento sean válidos.
+        options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var usuarioIdClaim = context.Principal?.FindFirst("usuarioId")?.Value;
+                if (!int.TryParse(usuarioIdClaim, out var usuarioId))
+                {
+                    context.Fail("Token inválido");
+                    return;
+                }
+
+                var repo = context.HttpContext.RequestServices.GetRequiredService<IRepositorio<Usuario>>();
+                var usuario = await repo.ObtenerPorIdAsync(usuarioId);
+                if (usuario == null)
+                {
+                    context.Fail("La cuenta ya no existe");
+                    return;
+                }
+
+                var iatClaim = context.Principal?.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Iat)?.Value;
+                if (usuario.TokensValidosDesde.HasValue && long.TryParse(iatClaim, out var iatUnix))
+                {
+                    var emitidoEn = DateTimeOffset.FromUnixTimeSeconds(iatUnix).UtcDateTime;
+                    if (emitidoEn < usuario.TokensValidosDesde.Value)
+                        context.Fail("Token revocado");
+                }
+            }
         };
     });
 
