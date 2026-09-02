@@ -78,9 +78,11 @@ public class AuthServicio : IAuthServicio
             await _usuarioRepositorio.AgregarAsync(usuario);
             return usuario;
         }
-        catch
+        catch (Exception ex)
         {
             await _pacienteRepositorio.EliminarAsync(paciente.Id);
+            if (ex is InvalidOperationException)
+                throw new InvalidOperationException("Ya existe una cuenta con ese email");
             throw;
         }
     }
