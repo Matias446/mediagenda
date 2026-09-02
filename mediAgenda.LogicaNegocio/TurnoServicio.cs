@@ -108,6 +108,9 @@ public class TurnoServicio : ITurnoServicio
             return Enumerable.Empty<DateTime>();
         }
 
+        if (fecha.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
+            return Enumerable.Empty<DateTime>();
+
         var duracion = medico.DuracionTurnoMinutos;
 
         var turnosDelDia = (await _repositorio.ObtenerTodosAsync())

@@ -111,6 +111,12 @@ function Turnos() {
     return date.toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit' })
   }
 
+  const esFinDeSemana = (fechaStr) => {
+    if (!fechaStr) return false
+    const dia = new Date(`${fechaStr}T00:00:00Z`).getUTCDay()
+    return dia === 0 || dia === 6
+  }
+
   const puedeCrear = esPaciente
     ? (form.medicoId && form.slotSeleccionado)
     : (form.pacienteId && form.medicoId && form.slotSeleccionado)
@@ -164,7 +170,11 @@ function Turnos() {
         )}
 
         {slotsDisponibles.length === 0 && form.medicoId && form.fecha && (
-          <p className="text-sm text-red-500">No hay horarios disponibles para este día.</p>
+          <p className="text-sm text-red-500">
+            {esFinDeSemana(form.fecha)
+              ? 'No se atiende los fines de semana. Elegí un día hábil.'
+              : 'No hay horarios disponibles para este día.'}
+          </p>
         )}
 
         <button onClick={crear}
