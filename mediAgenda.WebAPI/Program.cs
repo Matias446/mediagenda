@@ -4,6 +4,8 @@ using mediAgenda.ILogicaNegocio;
 using mediAgenda.LogicaNegocio;
 using mediAgenda.Dominio;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpOverrides;
+using AspNetCoreRateLimit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,35 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+// Railway (y cualquier PaaS) hace de proxy: sin esto, HttpContext ve la IP interna
+// del proxy para todas las requests, no la del cliente real. Necesario para que el
+// rate limiting por IP y la detección de HTTPS (X-Forwarded-Proto) funcionen bien.
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(options =>
+{
+    options.EnableEndpointRateLimiting = true;
+    options.StackBlockedRequests = false;
+    options.HttpStatusCode = 429;
+    options.GeneralRules = new List<RateLimitRule>
+    {
+        new RateLimitRule
+        {
+            Endpoint = "post:/api/auth/login",
+            Period = "15m",
+            Limit = 5
+        }
+    };
+});
+builder.Services.AddInMemoryRateLimiting();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
 builder.Services.AddDbContext<MediAgendaContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")),
@@ -77,6 +108,8 @@ builder.Services.AddAuthentication("Bearer")
 
 var app = builder.Build();
 
+app.UseForwardedHeaders();
+
 app.UseMiddleware<mediAgenda.WebAPI.Middleware.ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
@@ -96,6 +129,7 @@ else
 }
 
 app.UseCors("AllowFrontend");
+app.UseIpRateLimiting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
