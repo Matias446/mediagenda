@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { UserRound, Stethoscope, MapPin, Users, Calendar } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 import Spinner from '../components/Spinner'
@@ -18,10 +19,13 @@ function estadoColor(estado) {
   }
 }
 
-function TarjetaStat({ valor, etiqueta }) {
+function TarjetaStat({ icono: Icono, valor, etiqueta, color }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm text-center">
-      <p className="text-3xl font-bold text-blue-600">{valor}</p>
+    <div className={`rounded-lg p-6 shadow-sm text-center ${color.fondo}`}>
+      <div className={`inline-flex items-center justify-center rounded-full p-3 mb-3 ${color.iconoFondo}`}>
+        <Icono size={28} className={color.icono} />
+      </div>
+      <p className={`text-3xl font-bold ${color.texto}`}>{valor}</p>
       <p className="text-sm text-gray-500 mt-1">{etiqueta}</p>
     </div>
   )
@@ -64,11 +68,16 @@ function DashboardAdmin() {
         <Spinner />
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          <TarjetaStat valor={stats.medicos} etiqueta="Médicos" />
-          <TarjetaStat valor={stats.especialidades} etiqueta="Especialidades" />
-          <TarjetaStat valor={stats.sedes} etiqueta="Sedes" />
-          <TarjetaStat valor={stats.pacientes} etiqueta="Pacientes" />
-          <TarjetaStat valor={stats.turnosHoy} etiqueta="Turnos hoy" />
+          <TarjetaStat icono={UserRound} valor={stats.medicos} etiqueta="Médicos"
+            color={{ fondo: 'bg-blue-50', iconoFondo: 'bg-blue-100', icono: 'text-blue-600', texto: 'text-blue-600' }} />
+          <TarjetaStat icono={Stethoscope} valor={stats.especialidades} etiqueta="Especialidades"
+            color={{ fondo: 'bg-purple-50', iconoFondo: 'bg-purple-100', icono: 'text-purple-600', texto: 'text-purple-600' }} />
+          <TarjetaStat icono={MapPin} valor={stats.sedes} etiqueta="Sedes"
+            color={{ fondo: 'bg-teal-50', iconoFondo: 'bg-teal-100', icono: 'text-teal-600', texto: 'text-teal-600' }} />
+          <TarjetaStat icono={Users} valor={stats.pacientes} etiqueta="Pacientes"
+            color={{ fondo: 'bg-green-50', iconoFondo: 'bg-green-100', icono: 'text-green-600', texto: 'text-green-600' }} />
+          <TarjetaStat icono={Calendar} valor={stats.turnosHoy} etiqueta="Turnos hoy"
+            color={{ fondo: 'bg-orange-50', iconoFondo: 'bg-orange-100', icono: 'text-orange-600', texto: 'text-orange-600' }} />
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Stethoscope } from 'lucide-react'
+import { Stethoscope, Trash2 } from 'lucide-react'
 import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
 import Spinner from '../components/Spinner'
@@ -76,9 +76,9 @@ function Especialidades() {
           {especialidades.map(e => (
             <li key={e.id} className="flex justify-between items-center bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
               <span className="text-gray-800">{e.nombre}</span>
-              <button onClick={() => setAEliminar(e)}
-                className="text-red-500 hover:text-red-700 text-sm font-medium">
-                Eliminar
+              <button onClick={() => setAEliminar(e)} title="Eliminar"
+                className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors">
+                <Trash2 size={18} />
               </button>
             </li>
           ))}

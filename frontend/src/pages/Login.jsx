@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Stethoscope } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 
@@ -26,6 +27,11 @@ function Login() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm w-full max-w-md">
+        <div className="flex justify-center mb-4">
+          <div className="bg-blue-50 text-blue-600 rounded-full p-4">
+            <Stethoscope size={32} />
+          </div>
+        </div>
         <h1 className="text-3xl font-bold text-blue-600 mb-2 text-center">mediAgenda</h1>
         <p className="text-gray-500 text-center mb-6">Iniciá sesión para continuar</p>
 

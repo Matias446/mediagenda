@@ -32,6 +32,16 @@ function Turnos() {
     return turnos.slice(inicio, inicio + POR_PAGINA)
   }, [turnos, pagina])
 
+  const medicosPorEspecialidad = useMemo(() => {
+    const grupos = {}
+    medicos.forEach(m => {
+      const especialidad = m.especialidadNombre || 'Sin especialidad'
+      if (!grupos[especialidad]) grupos[especialidad] = []
+      grupos[especialidad].push(m)
+    })
+    return grupos
+  }, [medicos])
+
   const cargarDatos = async () => {
     try {
       const turnosPromise = esPaciente
@@ -120,13 +130,13 @@ function Turnos() {
     }
   }
 
-  const estadoColor = (estado) => {
+  const estadoBadge = (estado) => {
     switch (estado) {
-      case 'Pendiente': return 'text-yellow-600'
-      case 'Confirmado': return 'text-green-600'
-      case 'Cancelado': return 'text-red-500'
-      case 'Completado': return 'text-blue-600'
-      default: return 'text-gray-600'
+      case 'Pendiente': return 'bg-yellow-100 text-yellow-700'
+      case 'Confirmado': return 'bg-green-100 text-green-700'
+      case 'Cancelado': return 'bg-red-100 text-red-600'
+      case 'Completado': return 'bg-blue-100 text-blue-700'
+      default: return 'bg-gray-100 text-gray-600'
     }
   }
 
@@ -164,7 +174,13 @@ function Turnos() {
         <select value={form.medicoId} onChange={handleMedicoChange}
           className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">Seleccioná un médico</option>
-          {medicos.map(m => <option key={m.id} value={m.id}>{m.nombre} {m.apellido}</option>)}
+          {Object.entries(medicosPorEspecialidad).map(([especialidad, lista]) => (
+            <optgroup key={especialidad} label={especialidad}>
+              {lista.map(m => (
+                <option key={m.id} value={m.id}>Dr. {m.nombre} {m.apellido} - {especialidad}</option>
+              ))}
+            </optgroup>
+          ))}
         </select>
 
         <div>
@@ -230,7 +246,9 @@ function Turnos() {
                   <p className="text-sm text-gray-500 mt-1">
                     {new Date(t.fechaHora).toLocaleString('es-UY')}
                   </p>
-                  <p className={`text-sm font-medium mt-1 ${estadoColor(t.estado)}`}>{t.estado}</p>
+                  <span className={`inline-block text-xs font-medium mt-2 px-2.5 py-1 rounded-full ${estadoBadge(t.estado)}`}>
+                    {t.estado}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3 ml-4">
                   {t.estado === 'Pendiente' && puedeGestionar && (

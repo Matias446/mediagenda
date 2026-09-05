@@ -30,7 +30,9 @@ public class MedicoController : ControllerBase
             Apellido = m.Apellido,
             Email = m.Email,
             EspecialidadId = m.EspecialidadId,
-            SedeId = m.SedeId
+            EspecialidadNombre = m.Especialidad?.Nombre,
+            SedeId = m.SedeId,
+            SedeNombre = m.Sede?.Nombre
         });
         return Ok(dto);
     }
@@ -48,7 +50,9 @@ public class MedicoController : ControllerBase
             Apellido = medico.Apellido,
             Email = medico.Email,
             EspecialidadId = medico.EspecialidadId,
-            SedeId = medico.SedeId
+            EspecialidadNombre = medico.Especialidad?.Nombre,
+            SedeId = medico.SedeId,
+            SedeNombre = medico.Sede?.Nombre
         });
     }
 
@@ -64,7 +68,9 @@ public class MedicoController : ControllerBase
             Apellido = m.Apellido,
             Email = m.Email,
             EspecialidadId = m.EspecialidadId,
-            SedeId = m.SedeId
+            EspecialidadNombre = m.Especialidad?.Nombre,
+            SedeId = m.SedeId,
+            SedeNombre = m.Sede?.Nombre
         });
         return Ok(dto);
     }
@@ -92,7 +98,9 @@ public class MedicoController : ControllerBase
             Apellido = creado.Apellido,
             Email = creado.Email,
             EspecialidadId = creado.EspecialidadId,
-            SedeId = creado.SedeId
+            EspecialidadNombre = creado.Especialidad?.Nombre,
+            SedeId = creado.SedeId,
+            SedeNombre = creado.Sede?.Nombre
         });
     }
 
@@ -113,15 +121,18 @@ public class MedicoController : ControllerBase
         medico.EspecialidadId = dto.EspecialidadId;
         medico.SedeId = dto.SedeId;
         await _servicio.ActualizarAsync(medico);
+        var actualizado = await _servicio.ObtenerPorIdAsync(id);
 
         return Ok(new MedicoDTO
         {
-            Id = medico.Id,
-            Nombre = medico.Nombre,
-            Apellido = medico.Apellido,
-            Email = medico.Email,
-            EspecialidadId = medico.EspecialidadId,
-            SedeId = medico.SedeId
+            Id = actualizado.Id,
+            Nombre = actualizado.Nombre,
+            Apellido = actualizado.Apellido,
+            Email = actualizado.Email,
+            EspecialidadId = actualizado.EspecialidadId,
+            EspecialidadNombre = actualizado.Especialidad?.Nombre,
+            SedeId = actualizado.SedeId,
+            SedeNombre = actualizado.Sede?.Nombre
         });
     }
 

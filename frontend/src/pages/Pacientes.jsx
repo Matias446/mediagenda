@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Users, Search } from 'lucide-react'
+import { Users, Search, Trash2 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
@@ -188,9 +188,9 @@ function Pacientes() {
                       <p className="text-sm text-gray-500">{p.email} · {p.cedula}</p>
                     </div>
                     {esAdmin && (
-                      <button onClick={() => setAEliminar(p)}
-                        className="text-red-500 hover:text-red-700 text-sm font-medium ml-4">
-                        Eliminar
+                      <button onClick={() => setAEliminar(p)} title="Eliminar"
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg ml-4 transition-colors">
+                        <Trash2 size={18} />
                       </button>
                     )}
                   </li>
