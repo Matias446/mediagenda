@@ -7,6 +7,7 @@ import ModalConfirmacion from '../components/ModalConfirmacion'
 function Turnos() {
   const { rol, pacienteId } = useAuth()
   const esPaciente = rol === 'Paciente'
+  const puedeGestionar = rol === 'Admin' || rol === 'Administrativo'
 
   const [turnos, setTurnos] = useState([])
   const [medicos, setMedicos] = useState([])
@@ -81,6 +82,16 @@ function Turnos() {
       toast.success('Turno reservado correctamente')
     } catch (error) {
       toast.error(error.response?.data?.mensaje || 'No se pudo reservar el turno')
+    }
+  }
+
+  const confirmar = async (id) => {
+    try {
+      await api.put(`/Turno/${id}/confirmar`)
+      await cargarDatos()
+      toast.success('Turno confirmado correctamente')
+    } catch (error) {
+      toast.error(error.response?.data?.mensaje || 'No se pudo confirmar el turno')
     }
   }
 
@@ -202,12 +213,20 @@ function Turnos() {
                   </p>
                   <p className={`text-sm font-medium mt-1 ${estadoColor(t.estado)}`}>{t.estado}</p>
                 </div>
-                {t.estado === 'Pendiente' && (
-                  <button onClick={() => setACancelar(t)}
-                    className="text-red-500 hover:text-red-700 text-sm font-medium ml-4">
-                    Cancelar
-                  </button>
-                )}
+                <div className="flex items-center gap-3 ml-4">
+                  {t.estado === 'Pendiente' && puedeGestionar && (
+                    <button onClick={() => confirmar(t.id)}
+                      className="text-green-600 hover:text-green-700 text-sm font-medium">
+                      Confirmar
+                    </button>
+                  )}
+                  {t.estado === 'Pendiente' && (
+                    <button onClick={() => setACancelar(t)}
+                      className="text-red-500 hover:text-red-700 text-sm font-medium">
+                      Cancelar
+                    </button>
+                  )}
+                </div>
               </div>
             </li>
           ))}

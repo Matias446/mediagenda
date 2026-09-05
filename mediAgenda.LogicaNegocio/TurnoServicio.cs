@@ -101,6 +101,18 @@ public class TurnoServicio : ITurnoServicio
         await _repositorio.ActualizarAsync(turno);
     }
 
+    public async Task ConfirmarAsync(int id)
+    {
+        var turno = await _repositorio.ObtenerPorIdAsync(id);
+        if (turno == null) throw new KeyNotFoundException("Turno no encontrado");
+
+        if (turno.Estado != EstadoTurno.Pendiente)
+            throw new InvalidOperationException("Solo se pueden confirmar turnos pendientes");
+
+        turno.Estado = EstadoTurno.Confirmado;
+        await _repositorio.ActualizarAsync(turno);
+    }
+
     public async Task<IEnumerable<DateTime>> ObtenerSlotsDisponiblesAsync(int medicoId, DateTime fecha)
     {
         var medico = await _medicoRepositorio.ObtenerPorIdAsync(medicoId);

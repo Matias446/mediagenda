@@ -88,6 +88,14 @@ public class TurnoController : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{id}/confirmar")]
+    [Authorize(Roles = "Admin,Administrativo")]
+    public async Task<IActionResult> Confirmar(int id)
+    {
+        await _servicio.ConfirmarAsync(id);
+        return NoContent();
+    }
+
     private bool EsPacienteAjeno(int pacienteId)
         => User.IsInRole("Paciente") && User.FindFirst("pacienteId")?.Value != pacienteId.ToString();
 
