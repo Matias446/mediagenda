@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Calendar, CalendarX } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
@@ -6,6 +6,9 @@ import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
 import Spinner from '../components/Spinner'
 import EmptyState from '../components/EmptyState'
+import Paginacion from '../components/Paginacion'
+
+const POR_PAGINA = 10
 
 function Turnos() {
   const { rol, pacienteId } = useAuth()
@@ -21,6 +24,13 @@ function Turnos() {
     pacienteId: '', medicoId: '', fecha: '', slotSeleccionado: ''
   })
   const [aCancelar, setACancelar] = useState(null)
+  const [pagina, setPagina] = useState(1)
+
+  const totalPaginas = Math.max(1, Math.ceil(turnos.length / POR_PAGINA))
+  const turnosPaginados = useMemo(() => {
+    const inicio = (pagina - 1) * POR_PAGINA
+    return turnos.slice(inicio, inicio + POR_PAGINA)
+  }, [turnos, pagina])
 
   const cargarDatos = async () => {
     try {
@@ -206,8 +216,9 @@ function Turnos() {
       ) : turnos.length === 0 ? (
         <EmptyState icono={Calendar} mensaje="No hay turnos registrados." />
       ) : (
+        <>
         <ul className="space-y-2">
-          {turnos.map(t => (
+          {turnosPaginados.map(t => (
             <li key={t.id} className="bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
               <div className="flex justify-between items-start">
                 <div>
@@ -239,6 +250,14 @@ function Turnos() {
             </li>
           ))}
         </ul>
+        <Paginacion
+          paginaActual={pagina}
+          totalPaginas={totalPaginas}
+          totalResultados={turnos.length}
+          porPagina={POR_PAGINA}
+          onCambiarPagina={setPagina}
+        />
+        </>
       )}
 
       <ModalConfirmacion

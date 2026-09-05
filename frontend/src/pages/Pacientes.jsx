@@ -6,6 +6,9 @@ import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
 import Spinner from '../components/Spinner'
 import EmptyState from '../components/EmptyState'
+import Paginacion from '../components/Paginacion'
+
+const POR_PAGINA = 10
 
 function Pacientes() {
   const { rol } = useAuth()
@@ -20,6 +23,7 @@ function Pacientes() {
   const [aEliminar, setAEliminar] = useState(null)
   const [formUsuario, setFormUsuario] = useState({ email: '', password: '', rol: 'Administrativo' })
   const [busqueda, setBusqueda] = useState('')
+  const [pagina, setPagina] = useState(1)
 
   const pacientesFiltrados = useMemo(() => {
     const termino = busqueda.trim().toLowerCase()
@@ -30,6 +34,17 @@ function Pacientes() {
       p.cedula?.toLowerCase().includes(termino)
     )
   }, [pacientes, busqueda])
+
+  const totalPaginas = Math.max(1, Math.ceil(pacientesFiltrados.length / POR_PAGINA))
+  const pacientesPaginados = useMemo(() => {
+    const inicio = (pagina - 1) * POR_PAGINA
+    return pacientesFiltrados.slice(inicio, inicio + POR_PAGINA)
+  }, [pacientesFiltrados, pagina])
+
+  const handleBusqueda = (valor) => {
+    setBusqueda(valor)
+    setPagina(1)
+  }
 
   const cargarPacientes = async () => {
     try {
@@ -157,29 +172,38 @@ function Pacientes() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input type="text" placeholder="Buscar por nombre, apellido o cédula..."
               value={busqueda}
-              onChange={e => setBusqueda(e.target.value)}
+              onChange={e => handleBusqueda(e.target.value)}
               className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
 
           {pacientesFiltrados.length === 0 ? (
             <p className="text-center text-gray-500 py-6">No se encontraron resultados para "{busqueda}"</p>
           ) : (
-            <ul className="space-y-2">
-              {pacientesFiltrados.map(p => (
-                <li key={p.id} className="flex justify-between items-center bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
-                  <div>
-                    <p className="font-medium text-gray-800">{p.nombre} {p.apellido}</p>
-                    <p className="text-sm text-gray-500">{p.email} · {p.cedula}</p>
-                  </div>
-                  {esAdmin && (
-                    <button onClick={() => setAEliminar(p)}
-                      className="text-red-500 hover:text-red-700 text-sm font-medium ml-4">
-                      Eliminar
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <>
+              <ul className="space-y-2">
+                {pacientesPaginados.map(p => (
+                  <li key={p.id} className="flex justify-between items-center bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
+                    <div>
+                      <p className="font-medium text-gray-800">{p.nombre} {p.apellido}</p>
+                      <p className="text-sm text-gray-500">{p.email} · {p.cedula}</p>
+                    </div>
+                    {esAdmin && (
+                      <button onClick={() => setAEliminar(p)}
+                        className="text-red-500 hover:text-red-700 text-sm font-medium ml-4">
+                        Eliminar
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              <Paginacion
+                paginaActual={pagina}
+                totalPaginas={totalPaginas}
+                totalResultados={pacientesFiltrados.length}
+                porPagina={POR_PAGINA}
+                onCambiarPagina={setPagina}
+              />
+            </>
           )}
         </>
       )}

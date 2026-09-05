@@ -6,6 +6,9 @@ import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
 import Spinner from '../components/Spinner'
 import EmptyState from '../components/EmptyState'
+import Paginacion from '../components/Paginacion'
+
+const POR_PAGINA = 10
 
 function Medicos() {
   const { rol } = useAuth()
@@ -22,6 +25,7 @@ function Medicos() {
   const [formEdicion, setFormEdicion] = useState(null)
   const [aEliminar, setAEliminar] = useState(null)
   const [busqueda, setBusqueda] = useState('')
+  const [pagina, setPagina] = useState(1)
 
   const medicosFiltrados = useMemo(() => {
     const termino = busqueda.trim().toLowerCase()
@@ -33,6 +37,17 @@ function Medicos() {
         especialidadNombre.toLowerCase().includes(termino)
     })
   }, [medicos, especialidades, busqueda])
+
+  const totalPaginas = Math.max(1, Math.ceil(medicosFiltrados.length / POR_PAGINA))
+  const medicosPaginados = useMemo(() => {
+    const inicio = (pagina - 1) * POR_PAGINA
+    return medicosFiltrados.slice(inicio, inicio + POR_PAGINA)
+  }, [medicosFiltrados, pagina])
+
+  const handleBusqueda = (valor) => {
+    setBusqueda(valor)
+    setPagina(1)
+  }
 
   const cargarDatos = async () => {
     try {
@@ -160,15 +175,16 @@ function Medicos() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input type="text" placeholder="Buscar por nombre, apellido o especialidad..."
               value={busqueda}
-              onChange={e => setBusqueda(e.target.value)}
+              onChange={e => handleBusqueda(e.target.value)}
               className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
 
           {medicosFiltrados.length === 0 ? (
             <p className="text-center text-gray-500 py-6">No se encontraron resultados para "{busqueda}"</p>
           ) : (
+            <>
             <ul className="space-y-2">
-              {medicosFiltrados.map(m => (
+              {medicosPaginados.map(m => (
             <li key={m.id} className="bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
               {editandoId === m.id ? (
                 <div className="space-y-2">
@@ -234,6 +250,14 @@ function Medicos() {
             </li>
               ))}
             </ul>
+            <Paginacion
+              paginaActual={pagina}
+              totalPaginas={totalPaginas}
+              totalResultados={medicosFiltrados.length}
+              porPagina={POR_PAGINA}
+              onCambiarPagina={setPagina}
+            />
+            </>
           )}
         </>
       )}
