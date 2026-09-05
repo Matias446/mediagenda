@@ -15,6 +15,7 @@ function Pacientes() {
     cedula: '', telefono: '', fechaNacimiento: ''
   })
   const [aEliminar, setAEliminar] = useState(null)
+  const [formUsuario, setFormUsuario] = useState({ email: '', password: '', rol: 'Administrativo' })
 
   const cargarPacientes = async () => {
     try {
@@ -40,6 +41,16 @@ function Pacientes() {
       toast.success('Paciente creado correctamente')
     } catch (error) {
       toast.error(error.response?.data?.mensaje || 'No se pudo crear el paciente')
+    }
+  }
+
+  const crearUsuario = async () => {
+    try {
+      await api.post('/Auth/register-admin', formUsuario)
+      setFormUsuario({ email: '', password: '', rol: 'Administrativo' })
+      toast.success('Usuario creado correctamente')
+    } catch (error) {
+      toast.error(error.response?.data?.mensaje || 'No se pudo crear el usuario')
     }
   }
 
@@ -94,6 +105,30 @@ function Pacientes() {
         <button onClick={crear}
           className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium">
           Agregar Paciente
+        </button>
+      </div>
+      )}
+
+      {esAdmin && (
+      <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6 shadow-sm space-y-3">
+        <h2 className="text-lg font-semibold text-gray-800">Crear usuario Admin / Administrativo</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <input type="email" placeholder="Email" value={formUsuario.email}
+            onChange={e => setFormUsuario({ ...formUsuario, email: e.target.value })}
+            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <input type="password" placeholder="Contraseña" value={formUsuario.password}
+            onChange={e => setFormUsuario({ ...formUsuario, password: e.target.value })}
+            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <select value={formUsuario.rol}
+          onChange={e => setFormUsuario({ ...formUsuario, rol: e.target.value })}
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="Administrativo">Administrativo</option>
+          <option value="Admin">Admin</option>
+        </select>
+        <button onClick={crearUsuario}
+          className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium">
+          Crear usuario
         </button>
       </div>
       )}

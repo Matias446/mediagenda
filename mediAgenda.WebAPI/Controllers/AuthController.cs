@@ -33,6 +33,17 @@ public class AuthController : ControllerBase
         return Ok(new { usuario.Id, usuario.Email, usuario.Rol });
     }
 
+    [HttpPost("register-admin")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminDTO dto)
+    {
+        if (!Enum.TryParse<RolUsuario>(dto.Rol, out var rol) || (rol != RolUsuario.Admin && rol != RolUsuario.Administrativo))
+            return BadRequest(new { mensaje = "Rol inválido. Debe ser Admin o Administrativo." });
+
+        var usuario = await _authServicio.RegistrarAdminAsync(dto.Email, dto.Password, rol);
+        return Ok(new { usuario.Id, usuario.Email, usuario.Rol });
+    }
+
     [HttpPut("cambiar-password")]
     [Authorize]
     public async Task<IActionResult> CambiarPassword([FromBody] CambiarPasswordDTO dto)

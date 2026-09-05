@@ -91,6 +91,30 @@ public class AuthServicio : IAuthServicio
         }
     }
 
+    public async Task<Usuario> RegistrarAdminAsync(string email, string password, RolUsuario rol)
+    {
+        if (rol != RolUsuario.Admin && rol != RolUsuario.Administrativo)
+            throw new InvalidOperationException("El rol debe ser Admin o Administrativo.");
+
+        var usuarios = await _usuarioRepositorio.ObtenerTodosAsync();
+        if (usuarios.Any(u => u.Email == email))
+            throw new InvalidOperationException("Ya existe una cuenta registrada con este email.");
+
+        var pacientes = await _pacienteRepositorio.ObtenerTodosAsync();
+        if (pacientes.Any(p => p.Email == email))
+            throw new InvalidOperationException("Ya existe una cuenta registrada con este email.");
+
+        var usuario = new Usuario
+        {
+            Email = email,
+            Password = BCrypt.Net.BCrypt.HashPassword(password),
+            Rol = rol,
+            PacienteId = null
+        };
+        await _usuarioRepositorio.AgregarAsync(usuario);
+        return usuario;
+    }
+
     public async Task CambiarPasswordAsync(int usuarioId, string passwordActual, string passwordNueva)
     {
         var usuario = await _usuarioRepositorio.ObtenerPorIdAsync(usuarioId);
