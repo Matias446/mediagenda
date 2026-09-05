@@ -10,13 +10,15 @@ public class TurnoServicio : ITurnoServicio
     private readonly IRepositorio<Turno> _repositorio;
     private readonly IRepositorio<Medico> _medicoRepositorio;
     private readonly IRepositorio<Paciente> _pacienteRepositorio;
+    private readonly IEmailSender _emailSender;
     private readonly ILogger<TurnoServicio> _logger;
 
-    public TurnoServicio(IRepositorio<Turno> repositorio, IRepositorio<Medico> medicoRepositorio, IRepositorio<Paciente> pacienteRepositorio, ILogger<TurnoServicio> logger)
+    public TurnoServicio(IRepositorio<Turno> repositorio, IRepositorio<Medico> medicoRepositorio, IRepositorio<Paciente> pacienteRepositorio, IEmailSender emailSender, ILogger<TurnoServicio> logger)
     {
         _repositorio = repositorio;
         _medicoRepositorio = medicoRepositorio;
         _pacienteRepositorio = pacienteRepositorio;
+        _emailSender = emailSender;
         _logger = logger;
     }
 
@@ -66,7 +68,22 @@ public class TurnoServicio : ITurnoServicio
 
         turno.Estado = EstadoTurno.Pendiente;
         await _repositorio.AgregarAsync(turno);
-        return (await ConNombresAsync(new[] { turno })).First();
+        var turnoCreado = (await ConNombresAsync(new[] { turno })).First();
+
+        try
+        {
+            await _emailSender.EnviarAsync(
+                turnoCreado.Paciente.Email,
+                "Turno reservado - mediAgenda",
+                $"Hola {turnoCreado.Paciente.Nombre}, tu turno con {turnoCreado.Medico.Nombre} {turnoCreado.Medico.Apellido} " +
+                $"quedó reservado para el {turnoCreado.FechaHora:dd/MM/yyyy} a las {turnoCreado.FechaHora:HH:mm}.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "No se pudo enviar el email de confirmación del turno {TurnoId}", turnoCreado.Id);
+        }
+
+        return turnoCreado;
     }
 
     private async Task<IEnumerable<Turno>> ConNombresAsync(IEnumerable<Turno> turnos)
@@ -99,6 +116,22 @@ public class TurnoServicio : ITurnoServicio
 
         turno.Estado = EstadoTurno.Cancelado;
         await _repositorio.ActualizarAsync(turno);
+
+        try
+        {
+            var paciente = await _pacienteRepositorio.ObtenerPorIdAsync(turno.PacienteId);
+            if (paciente != null)
+            {
+                await _emailSender.EnviarAsync(
+                    paciente.Email,
+                    "Turno cancelado - mediAgenda",
+                    $"Hola {paciente.Nombre}, tu turno del {turno.FechaHora:dd/MM/yyyy} a las {turno.FechaHora:HH:mm} fue cancelado.");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "No se pudo enviar el email de cancelación del turno {TurnoId}", turno.Id);
+        }
     }
 
     public async Task ConfirmarAsync(int id)

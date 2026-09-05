@@ -71,7 +71,10 @@ builder.Services.AddScoped<IEspecialidadServicio, EspecialidadServicio>();
 builder.Services.AddScoped<ISedeServicio, SedeServicio>();
 builder.Services.AddScoped<ITurnoServicio, TurnoServicio>();
 builder.Services.AddScoped<IAuthServicio, AuthServicio>();
-builder.Services.AddSingleton<IEmailSender, LoggingEmailSender>();
+if (string.IsNullOrWhiteSpace(builder.Configuration["Email:Username"]))
+    builder.Services.AddSingleton<IEmailSender, LoggingEmailSender>();
+else
+    builder.Services.AddSingleton<IEmailSender, SmtpEmailSender>();
 
 
 
