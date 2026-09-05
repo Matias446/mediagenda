@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Home, Stethoscope, MapPin, UserRound, Users, Calendar, LogOut } from 'lucide-react'
+import { Home, Stethoscope, MapPin, UserRound, Users, Calendar, LogOut, UserCog } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 
 function Navbar() {
@@ -28,6 +28,7 @@ function Navbar() {
       { to: '/', label: 'Inicio', icono: Home },
       { to: '/turnos', label: 'Mis Turnos', icono: Calendar },
       { to: '/medicos', label: 'Médicos', icono: UserRound },
+      { to: '/mi-perfil', label: 'Mi Perfil', icono: UserCog },
     ],
   }
 

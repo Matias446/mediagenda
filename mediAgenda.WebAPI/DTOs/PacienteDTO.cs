@@ -41,3 +41,18 @@ public class CrearPacienteDTO
     [Required(ErrorMessage = "La fecha de nacimiento es requerida")]
     public DateTime FechaNacimiento { get; set; }
 }
+
+public class ActualizarPerfilPacienteDTO
+{
+    [Required(ErrorMessage = "El nombre es requerido")]
+    [MaxLength(100, ErrorMessage = "El nombre no puede superar los 100 caracteres")]
+    public string Nombre { get; set; }
+
+    [Required(ErrorMessage = "El apellido es requerido")]
+    [MaxLength(100, ErrorMessage = "El apellido no puede superar los 100 caracteres")]
+    public string Apellido { get; set; }
+
+    [Required(ErrorMessage = "El teléfono es requerido")]
+    [Phone(ErrorMessage = "Teléfono inválido")]
+    public string Telefono { get; set; }
+}

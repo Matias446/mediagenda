@@ -85,4 +85,49 @@ public class PacienteController : ControllerBase
         await _servicio.EliminarAsync(id);
         return NoContent();
     }
+
+    [HttpGet("perfil")]
+    [Authorize(Roles = "Paciente")]
+    public async Task<IActionResult> ObtenerPerfil()
+    {
+        var pacienteId = int.Parse(User.FindFirst("pacienteId")!.Value);
+        var paciente = await _servicio.ObtenerPorIdAsync(pacienteId);
+        if (paciente == null) return NotFound();
+        return Ok(new PacienteDTO
+        {
+            Id = paciente.Id,
+            Nombre = paciente.Nombre,
+            Apellido = paciente.Apellido,
+            Email = paciente.Email,
+            Cedula = paciente.Cedula,
+            Telefono = paciente.Telefono
+        });
+    }
+
+    [HttpPut("perfil")]
+    [Authorize(Roles = "Paciente")]
+    public async Task<IActionResult> ActualizarPerfil([FromBody] ActualizarPerfilPacienteDTO dto)
+    {
+        var pacienteId = int.Parse(User.FindFirst("pacienteId")!.Value);
+        await _servicio.ActualizarPerfilAsync(pacienteId, dto.Nombre, dto.Apellido, dto.Telefono);
+        var paciente = await _servicio.ObtenerPorIdAsync(pacienteId);
+        return Ok(new PacienteDTO
+        {
+            Id = paciente!.Id,
+            Nombre = paciente.Nombre,
+            Apellido = paciente.Apellido,
+            Email = paciente.Email,
+            Cedula = paciente.Cedula,
+            Telefono = paciente.Telefono
+        });
+    }
+
+    [HttpPut("cambiar-password")]
+    [Authorize(Roles = "Paciente")]
+    public async Task<IActionResult> CambiarPassword([FromBody] CambiarPasswordDTO dto)
+    {
+        var pacienteId = int.Parse(User.FindFirst("pacienteId")!.Value);
+        await _servicio.CambiarPasswordAsync(pacienteId, dto.PasswordActual, dto.PasswordNueva);
+        return NoContent();
+    }
 }

@@ -11,6 +11,7 @@ import Pacientes from './pages/Pacientes'
 import Turnos from './pages/Turnos'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
+import MiPerfil from './pages/MiPerfil'
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/sedes" element={<RutaProtegida roles={['Admin']}><Sedes /></RutaProtegida>} />
           <Route path="/pacientes" element={<RutaProtegida roles={['Admin', 'Administrativo']}><Pacientes /></RutaProtegida>} />
           <Route path="/turnos" element={<RutaProtegida roles={['Admin', 'Administrativo', 'Paciente']}><Turnos /></RutaProtegida>} />
+          <Route path="/mi-perfil" element={<RutaProtegida roles={['Paciente']}><MiPerfil /></RutaProtegida>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
