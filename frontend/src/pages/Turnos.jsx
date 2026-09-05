@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Calendar, CalendarX } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
+import Spinner from '../components/Spinner'
+import EmptyState from '../components/EmptyState'
 
 function Turnos() {
   const { rol, pacienteId } = useAuth()
@@ -181,11 +184,14 @@ function Turnos() {
         )}
 
         {slotsDisponibles.length === 0 && form.medicoId && form.fecha && (
-          <p className="text-sm text-red-500">
-            {esFinDeSemana(form.fecha)
-              ? 'No se atiende los fines de semana. Elegí un día hábil.'
-              : 'No hay horarios disponibles para este día.'}
-          </p>
+          <div className="flex items-center gap-2 text-sm text-red-500">
+            <CalendarX size={18} />
+            <p>
+              {esFinDeSemana(form.fecha)
+                ? 'No se atiende los fines de semana. Elegí un día hábil.'
+                : 'No hay horarios disponibles para este día.'}
+            </p>
+          </div>
         )}
 
         <button onClick={crear}
@@ -196,7 +202,9 @@ function Turnos() {
       </div>
 
       {loading ? (
-        <p className="text-gray-500">Cargando...</p>
+        <Spinner />
+      ) : turnos.length === 0 ? (
+        <EmptyState icono={Calendar} mensaje="No hay turnos registrados." />
       ) : (
         <ul className="space-y-2">
           {turnos.map(t => (

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Home, Stethoscope, MapPin, UserRound, Users, Calendar, LogOut } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 
 function Navbar() {
@@ -10,23 +11,23 @@ function Navbar() {
 
   const linksPorRol = {
     Admin: [
-      { to: '/', label: 'Inicio' },
-      { to: '/especialidades', label: 'Especialidades' },
-      { to: '/sedes', label: 'Sedes' },
-      { to: '/medicos', label: 'Médicos' },
-      { to: '/pacientes', label: 'Pacientes' },
-      { to: '/turnos', label: 'Turnos' },
+      { to: '/', label: 'Inicio', icono: Home },
+      { to: '/especialidades', label: 'Especialidades', icono: Stethoscope },
+      { to: '/sedes', label: 'Sedes', icono: MapPin },
+      { to: '/medicos', label: 'Médicos', icono: UserRound },
+      { to: '/pacientes', label: 'Pacientes', icono: Users },
+      { to: '/turnos', label: 'Turnos', icono: Calendar },
     ],
     Administrativo: [
-      { to: '/', label: 'Inicio' },
-      { to: '/medicos', label: 'Médicos' },
-      { to: '/turnos', label: 'Turnos' },
-      { to: '/pacientes', label: 'Pacientes' },
+      { to: '/', label: 'Inicio', icono: Home },
+      { to: '/medicos', label: 'Médicos', icono: UserRound },
+      { to: '/turnos', label: 'Turnos', icono: Calendar },
+      { to: '/pacientes', label: 'Pacientes', icono: Users },
     ],
     Paciente: [
-      { to: '/', label: 'Inicio' },
-      { to: '/turnos', label: 'Mis Turnos' },
-      { to: '/medicos', label: 'Médicos' },
+      { to: '/', label: 'Inicio', icono: Home },
+      { to: '/turnos', label: 'Mis Turnos', icono: Calendar },
+      { to: '/medicos', label: 'Médicos', icono: UserRound },
     ],
   }
 
@@ -49,15 +50,17 @@ function Navbar() {
         <div className="hidden md:flex items-center gap-6">
           {isAuthenticated && links.map(link => (
             <Link key={link.to} to={link.to}
-              className={`text-sm font-medium transition-opacity hover:opacity-80 ${
+              className={`flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-80 ${
                 location.pathname === link.to ? 'underline underline-offset-4' : 'opacity-90'
               }`}>
+              <link.icono size={16} />
               {link.label}
             </Link>
           ))}
           {isAuthenticated ? (
             <button onClick={handleLogout}
-              className="text-sm font-medium bg-white text-blue-600 px-4 py-1 rounded-lg hover:bg-blue-50">
+              className="flex items-center gap-1.5 text-sm font-medium bg-white text-blue-600 px-4 py-1 rounded-lg hover:bg-blue-50">
+              <LogOut size={16} />
               Cerrar sesión
             </button>
           ) : (
@@ -82,15 +85,17 @@ function Navbar() {
           {isAuthenticated && links.map(link => (
             <Link key={link.to} to={link.to}
               onClick={() => setMenuAbierto(false)}
-              className={`text-sm font-medium py-2 border-b border-blue-500 ${
+              className={`flex items-center gap-2 text-sm font-medium py-2 border-b border-blue-500 ${
                 location.pathname === link.to ? 'font-bold' : 'opacity-90'
               }`}>
+              <link.icono size={16} />
               {link.label}
             </Link>
           ))}
           {isAuthenticated ? (
             <button onClick={handleLogout}
-              className="text-sm font-medium bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 mt-2">
+              className="flex items-center gap-2 text-sm font-medium bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 mt-2">
+              <LogOut size={16} />
               Cerrar sesión
             </button>
           ) : (

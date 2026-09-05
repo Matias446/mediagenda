@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
+import Spinner from '../components/Spinner'
 
 function esHoy(fechaHoraIso) {
   return new Date(fechaHoraIso).toDateString() === new Date().toDateString()
@@ -60,7 +61,7 @@ function DashboardAdmin() {
     <div className="max-w-5xl mx-auto mt-6 px-4 pb-10">
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Panel de administración</h1>
       {loading ? (
-        <p className="text-gray-500">Cargando...</p>
+        <Spinner />
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           <TarjetaStat valor={stats.medicos} etiqueta="Médicos" />
@@ -96,7 +97,7 @@ function DashboardAdministrativo() {
     <div className="max-w-2xl mx-auto mt-6 px-4 pb-10">
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Turnos de hoy</h1>
       {loading ? (
-        <p className="text-gray-500">Cargando...</p>
+        <Spinner />
       ) : turnosHoy.length === 0 ? (
         <p className="text-gray-500">No hay turnos programados para hoy.</p>
       ) : (
@@ -141,7 +142,7 @@ function DashboardPaciente({ pacienteId }) {
     <div className="max-w-2xl mx-auto mt-6 px-4 pb-10">
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Mis próximos turnos</h1>
       {loading ? (
-        <p className="text-gray-500">Cargando...</p>
+        <Spinner />
       ) : turnos.length === 0 ? (
         <p className="text-gray-500">No tenés turnos próximos.</p>
       ) : (

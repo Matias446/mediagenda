@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { UserRound } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
+import Spinner from '../components/Spinner'
+import EmptyState from '../components/EmptyState'
 
 function Medicos() {
   const { rol } = useAuth()
@@ -136,7 +139,9 @@ function Medicos() {
       )}
 
       {loading ? (
-        <p className="text-gray-500">Cargando...</p>
+        <Spinner />
+      ) : medicos.length === 0 ? (
+        <EmptyState icono={UserRound} mensaje="No hay médicos registrados." />
       ) : (
         <ul className="space-y-2">
           {medicos.map(m => (

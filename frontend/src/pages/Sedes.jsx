@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { MapPin } from 'lucide-react'
 import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
+import Spinner from '../components/Spinner'
+import EmptyState from '../components/EmptyState'
 
 function Sedes() {
   const [sedes, setSedes] = useState([])
@@ -69,7 +72,9 @@ function Sedes() {
       </div>
 
       {loading ? (
-        <p className="text-gray-500">Cargando...</p>
+        <Spinner />
+      ) : sedes.length === 0 ? (
+        <EmptyState icono={MapPin} mensaje="No hay sedes registradas." />
       ) : (
         <ul className="space-y-2">
           {sedes.map(s => (

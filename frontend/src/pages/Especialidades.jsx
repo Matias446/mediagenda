@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Stethoscope } from 'lucide-react'
 import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
+import Spinner from '../components/Spinner'
+import EmptyState from '../components/EmptyState'
 
 function Especialidades() {
   const [especialidades, setEspecialidades] = useState([])
@@ -65,7 +68,9 @@ function Especialidades() {
       </div>
 
       {loading ? (
-        <p className="text-gray-500">Cargando...</p>
+        <Spinner />
+      ) : especialidades.length === 0 ? (
+        <EmptyState icono={Stethoscope} mensaje="No hay especialidades registradas. Agregá la primera." />
       ) : (
         <ul className="space-y-2">
           {especialidades.map(e => (
