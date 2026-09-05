@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
-import { UserRound } from 'lucide-react'
+import { UserRound, Search } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
@@ -21,6 +21,18 @@ function Medicos() {
   const [editandoId, setEditandoId] = useState(null)
   const [formEdicion, setFormEdicion] = useState(null)
   const [aEliminar, setAEliminar] = useState(null)
+  const [busqueda, setBusqueda] = useState('')
+
+  const medicosFiltrados = useMemo(() => {
+    const termino = busqueda.trim().toLowerCase()
+    if (!termino) return medicos
+    return medicos.filter(m => {
+      const especialidadNombre = especialidades.find(e => e.id === m.especialidadId)?.nombre || ''
+      return m.nombre?.toLowerCase().includes(termino) ||
+        m.apellido?.toLowerCase().includes(termino) ||
+        especialidadNombre.toLowerCase().includes(termino)
+    })
+  }, [medicos, especialidades, busqueda])
 
   const cargarDatos = async () => {
     try {
@@ -143,8 +155,20 @@ function Medicos() {
       ) : medicos.length === 0 ? (
         <EmptyState icono={UserRound} mensaje="No hay médicos registrados." />
       ) : (
-        <ul className="space-y-2">
-          {medicos.map(m => (
+        <>
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <input type="text" placeholder="Buscar por nombre, apellido o especialidad..."
+              value={busqueda}
+              onChange={e => setBusqueda(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          {medicosFiltrados.length === 0 ? (
+            <p className="text-center text-gray-500 py-6">No se encontraron resultados para "{busqueda}"</p>
+          ) : (
+            <ul className="space-y-2">
+              {medicosFiltrados.map(m => (
             <li key={m.id} className="bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
               {editandoId === m.id ? (
                 <div className="space-y-2">
@@ -208,8 +232,10 @@ function Medicos() {
                 </div>
               )}
             </li>
-          ))}
-        </ul>
+              ))}
+            </ul>
+          )}
+        </>
       )}
 
       <ModalConfirmacion
