@@ -83,7 +83,7 @@ function Sedes() {
                 <p className="font-medium text-gray-800">{s.nombre}</p>
                 <p className="text-sm text-gray-500">{s.direccion} · {s.telefono}</p>
               </div>
-              <button onClick={() => setAEliminar(s)} title="Eliminar"
+              <button onClick={() => setAEliminar(s)} title="Eliminar" aria-label={`Eliminar sede ${s.nombre}`}
                 className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg ml-4 transition-colors">
                 <Trash2 size={18} />
               </button>

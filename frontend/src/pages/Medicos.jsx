@@ -212,11 +212,11 @@ function Medicos() {
                   <div key={m.id} className="bg-white border border-gray-200 rounded-lg shadow-sm p-5 relative">
                     {esAdmin && editandoId !== m.id && (
                       <div className="absolute top-3 right-3 flex gap-1">
-                        <button onClick={() => empezarEdicion(m)} title="Editar"
+                        <button onClick={() => empezarEdicion(m)} title="Editar" aria-label={`Editar médico ${m.nombre} ${m.apellido}`}
                           className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-1.5 rounded-lg transition-colors">
                           <Pencil size={16} />
                         </button>
-                        <button onClick={() => setAEliminar(m)} title="Eliminar"
+                        <button onClick={() => setAEliminar(m)} title="Eliminar" aria-label={`Eliminar médico ${m.nombre} ${m.apellido}`}
                           className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg transition-colors">
                           <Trash2 size={16} />
                         </button>

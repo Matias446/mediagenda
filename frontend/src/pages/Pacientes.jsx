@@ -188,7 +188,7 @@ function Pacientes() {
                       <p className="text-sm text-gray-500">{p.email} · {p.cedula}</p>
                     </div>
                     {esAdmin && (
-                      <button onClick={() => setAEliminar(p)} title="Eliminar"
+                      <button onClick={() => setAEliminar(p)} title="Eliminar" aria-label={`Eliminar paciente ${p.nombre} ${p.apellido}`}
                         className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg ml-4 transition-colors">
                         <Trash2 size={18} />
                       </button>

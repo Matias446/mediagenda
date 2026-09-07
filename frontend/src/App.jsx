@@ -25,17 +25,19 @@ function App() {
           }}
         />
         <Navbar />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/registro" element={<Registro />} />
-          <Route path="/" element={<RutaProtegida><Home /></RutaProtegida>} />
-          <Route path="/especialidades" element={<RutaProtegida roles={['Admin']}><Especialidades /></RutaProtegida>} />
-          <Route path="/medicos" element={<RutaProtegida roles={['Admin', 'Administrativo', 'Paciente']}><Medicos /></RutaProtegida>} />
-          <Route path="/sedes" element={<RutaProtegida roles={['Admin']}><Sedes /></RutaProtegida>} />
-          <Route path="/pacientes" element={<RutaProtegida roles={['Admin', 'Administrativo']}><Pacientes /></RutaProtegida>} />
-          <Route path="/turnos" element={<RutaProtegida roles={['Admin', 'Administrativo', 'Paciente']}><Turnos /></RutaProtegida>} />
-          <Route path="/mi-perfil" element={<RutaProtegida roles={['Paciente']}><MiPerfil /></RutaProtegida>} />
-        </Routes>
+        <main className="min-h-screen bg-gray-50">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/registro" element={<Registro />} />
+            <Route path="/" element={<RutaProtegida><Home /></RutaProtegida>} />
+            <Route path="/especialidades" element={<RutaProtegida roles={['Admin']}><Especialidades /></RutaProtegida>} />
+            <Route path="/medicos" element={<RutaProtegida roles={['Admin', 'Administrativo', 'Paciente']}><Medicos /></RutaProtegida>} />
+            <Route path="/sedes" element={<RutaProtegida roles={['Admin']}><Sedes /></RutaProtegida>} />
+            <Route path="/pacientes" element={<RutaProtegida roles={['Admin', 'Administrativo']}><Pacientes /></RutaProtegida>} />
+            <Route path="/turnos" element={<RutaProtegida roles={['Admin', 'Administrativo', 'Paciente']}><Turnos /></RutaProtegida>} />
+            <Route path="/mi-perfil" element={<RutaProtegida roles={['Paciente']}><MiPerfil /></RutaProtegida>} />
+          </Routes>
+        </main>
       </BrowserRouter>
     </AuthProvider>
   )

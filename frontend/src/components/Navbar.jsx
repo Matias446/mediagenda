@@ -73,7 +73,8 @@ function Navbar() {
         </div>
 
         {/* Mobile burger */}
-        <button className="md:hidden flex flex-col gap-1.5" onClick={() => setMenuAbierto(!menuAbierto)}>
+        <button className="md:hidden flex flex-col gap-1.5" onClick={() => setMenuAbierto(!menuAbierto)}
+          aria-label={menuAbierto ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuAbierto}>
           <span className={`block w-6 h-0.5 bg-white transition-transform ${menuAbierto ? 'rotate-45 translate-y-2' : ''}`} />
           <span className={`block w-6 h-0.5 bg-white transition-opacity ${menuAbierto ? 'opacity-0' : ''}`} />
           <span className={`block w-6 h-0.5 bg-white transition-transform ${menuAbierto ? '-rotate-45 -translate-y-2' : ''}`} />
