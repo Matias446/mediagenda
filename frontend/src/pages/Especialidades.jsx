@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Helmet } from 'react-helmet-async'
 import { Stethoscope, Trash2 } from 'lucide-react'
 import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
@@ -54,6 +55,7 @@ function Especialidades() {
 
   return (
     <div className="max-w-2xl mx-auto mt-6 px-4 pb-10">
+      <Helmet><title>mediAgenda - Especialidades</title></Helmet>
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Especialidades</h1>
 
       <div className="flex flex-col sm:flex-row gap-2 mb-6">

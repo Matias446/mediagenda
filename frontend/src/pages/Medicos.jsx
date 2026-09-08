@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Helmet } from 'react-helmet-async'
 import { UserRound, Pencil, Trash2, Mail } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
@@ -135,6 +136,7 @@ function Medicos() {
 
   return (
     <div className="max-w-5xl mx-auto mt-6 px-4 pb-10">
+      <Helmet><title>mediAgenda - Médicos</title></Helmet>
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Médicos</h1>
 
       {esAdmin && (

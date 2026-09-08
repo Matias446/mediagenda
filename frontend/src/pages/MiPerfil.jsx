@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Helmet } from 'react-helmet-async'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
 import Spinner from '../components/Spinner'
@@ -66,6 +67,7 @@ function MiPerfil() {
   if (loading) {
     return (
       <div className="max-w-2xl mx-auto mt-6 px-4 pb-10">
+        <Helmet><title>mediAgenda - Mi Perfil</title></Helmet>
         <Spinner />
       </div>
     )
@@ -73,6 +75,7 @@ function MiPerfil() {
 
   return (
     <div className="max-w-2xl mx-auto mt-6 px-4 pb-10">
+      <Helmet><title>mediAgenda - Mi Perfil</title></Helmet>
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Mi Perfil</h1>
 
       <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6 shadow-sm space-y-3">

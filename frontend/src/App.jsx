@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import { HelmetProvider } from 'react-helmet-async'
 import { AuthProvider } from './context/AuthContext.jsx'
 import Navbar from './components/Navbar'
 import RutaProtegida from './components/RutaProtegida'
@@ -15,6 +16,7 @@ import MiPerfil from './pages/MiPerfil'
 
 function App() {
   return (
+    <HelmetProvider>
     <AuthProvider>
       <BrowserRouter>
         <Toaster
@@ -40,6 +42,7 @@ function App() {
         </main>
       </BrowserRouter>
     </AuthProvider>
+    </HelmetProvider>
   )
 }
 

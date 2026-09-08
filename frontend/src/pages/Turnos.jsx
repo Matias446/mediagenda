@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Helmet } from 'react-helmet-async'
 import { Calendar, CalendarX } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
@@ -157,6 +158,7 @@ function Turnos() {
 
   return (
     <div className="max-w-3xl mx-auto mt-6 px-4 pb-10">
+      <Helmet><title>mediAgenda - Turnos</title></Helmet>
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">
         {esPaciente ? 'Mis Turnos' : 'Turnos'}
       </h1>

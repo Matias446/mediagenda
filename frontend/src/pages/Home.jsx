@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { UserRound, Stethoscope, MapPin, Users, Calendar } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
@@ -186,10 +187,19 @@ function Bienvenida() {
 function Home() {
   const { rol, pacienteId } = useAuth()
 
-  if (rol === 'Admin') return <DashboardAdmin />
-  if (rol === 'Administrativo') return <DashboardAdministrativo />
-  if (rol === 'Paciente') return <DashboardPaciente pacienteId={pacienteId} />
-  return <Bienvenida />
+  const dashboard = () => {
+    if (rol === 'Admin') return <DashboardAdmin />
+    if (rol === 'Administrativo') return <DashboardAdministrativo />
+    if (rol === 'Paciente') return <DashboardPaciente pacienteId={pacienteId} />
+    return <Bienvenida />
+  }
+
+  return (
+    <>
+      <Helmet><title>mediAgenda - Inicio</title></Helmet>
+      {dashboard()}
+    </>
+  )
 }
 
 export default Home

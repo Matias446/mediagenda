@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { Stethoscope } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import api from '../services/api'
@@ -31,6 +32,7 @@ function Registro() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
+      <Helmet><title>mediAgenda - Registro</title></Helmet>
       <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm w-full max-w-md">
         <div className="flex justify-center mb-4">
           <div className="bg-blue-50 text-blue-600 rounded-full p-4">

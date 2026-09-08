@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Helmet } from 'react-helmet-async'
 import { MapPin, Trash2 } from 'lucide-react'
 import api from '../services/api'
 import ModalConfirmacion from '../components/ModalConfirmacion'
@@ -53,6 +54,7 @@ function Sedes() {
 
   return (
     <div className="max-w-2xl mx-auto mt-6 px-4 pb-10">
+      <Helmet><title>mediAgenda - Sedes</title></Helmet>
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">Sedes</h1>
 
       <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6 shadow-sm space-y-3">
